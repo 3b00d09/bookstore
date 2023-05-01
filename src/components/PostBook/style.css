@@ -1,0 +1,21 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    max-width: fit-content;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+}
+
+.form > input{
+    width: 10rem;
+    height: 3rem;
+    text-align: center;
+}
+
+.form > :nth-child(2){
+    height: 5rem;
+    width: 15rem;
+    text-align: center;
+    padding: 1rem;
+}
