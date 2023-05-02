@@ -1,14 +1,14 @@
 import { SignInButton, SignOutButton, SignUpButton, UserButton, useUser, SignedIn, SignedOut} from "@clerk/clerk-react";
 import {Link} from "react-router-dom";
-import React from "react";
+import Search from "./Search";
 
 function Header(){
     return(
-    <React.Fragment>
-        <SignedIn>
-                <header className="flex justify-between items-center bg-zinc-800 flex-wrap gap-4 p-4">
-                    <Logo />
-                    <ul className ="list-none flex justify-center items-center flex-wrap gap-4">
+        <header className="flex justify-between items-center bg-zinc-800 flex-wrap p-4">
+            <Logo />
+            <Search />
+            <SignedIn>
+                <ul className ="list-none flex justify-center items-center flex-wrap gap-4 basis-1/4">
                     <li className ="">
                         <Link to="/">Home</Link>
                         </li>
@@ -25,12 +25,8 @@ function Header(){
                             <SignOutButton />
                         </li>
                     </ul>
-                </header>
-        </SignedIn>
-
-        <SignedOut>
-            <header>
-                <Logo />
+            </SignedIn>
+            <SignedOut>
                 <ul className ="list-none flex justify-center items-center flex-wrap gap-4">
                     <li className ="">
                         <SignInButton />
@@ -39,9 +35,9 @@ function Header(){
                         <SignUpButton />
                     </li>
                 </ul>
-            </header>
-        </SignedOut>
-    </React.Fragment>
+            </SignedOut>
+        </header>
+
     )
 }
 
@@ -49,7 +45,7 @@ function Header(){
 function Logo(){
     const user = useUser()
     return(
-        <div className ="flex justify-center items-center gap-4 flex-wrap">
+        <div className ="flex justify-center items-center gap-4 flex-wrap basis-1/4">
             <UserButton />
             {user.user?.username}
         </div>

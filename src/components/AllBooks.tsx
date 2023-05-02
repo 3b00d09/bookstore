@@ -1,4 +1,3 @@
-import {useEffect, useState} from "react";
 
 function AllBooks(){
 
@@ -45,7 +44,7 @@ function AllBooks(){
     ]
 
     return(
-        <div className="flex flex-wrap gap-4 items-center m-6">
+        <div className="flex flex-wrap gap-4 items-center m-6 flex-1 content-start ">
         {Books.map((book) =>(
             <div key = {book.id}>
                 <img className ="w-32 mb-2" src ="src/assets/Samplebook.png"/>

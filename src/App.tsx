@@ -1,12 +1,8 @@
 
 import './App.css'
 import React from "react"
-//import { ClerkProvider } from '@clerk/clerk-react'
-
 import {useUser} from "@clerk/clerk-react";
-
 import {Route, Routes} from "react-router-dom"
-
 import PostBook from './components/PostBook/PostBook';
 import Header  from './components/Header';
 import Home from './pages/home/Home';
@@ -22,7 +18,7 @@ function App() {
     return (
       <React.Fragment>
         <Header />
-        <div className='main-content'>
+        <div className='main-content flex-1'>
           <Routes>
             <Route path ="/" element={<Home />} />
             <Route path ="/create" element={<PostBook />}/>

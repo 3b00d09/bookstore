@@ -1,14 +1,12 @@
 import AllBooks from "../../components/AllBooks";
-import Search from "../../components/Search"
-
-import React from "react";
+import SideBar from "../../components/SideBar";
 
 function Home(){
     return(
-        <React.Fragment>
-            <Search />
+        <div className="flex gap-4 h-full">
+            <SideBar />
             <AllBooks />
-        </React.Fragment>
+        </div>
     )
 }
 
