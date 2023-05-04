@@ -27,12 +27,10 @@ function PostBook(){
 
         const Book = {
             title: bookTitle,
-            description: bookDescription,
-            price: bookPrice,
-            category: 2
+            price: parseFloat(bookPrice),
+            description: bookDescription
         }
 
-        console.log(Book)
         const response = await fetch("https://bookstore-git-main-diyararashid123.vercel.app/book/create",{
             method:"POST",
             headers: {
