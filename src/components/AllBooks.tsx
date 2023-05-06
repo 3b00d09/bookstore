@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import Book from "./Book"
+import "../App.css"
 
-interface Book{
+interface BookData{
     id: number,
     title: string,
     price: number,
@@ -9,14 +11,22 @@ interface Book{
 
 function AllBooks(){
 
-    const [allBooks, setBooks] = useState<Book[]>([])
+    const [allBooks, setBooks] = useState<BookData[]>([])
+    const [dataLoaded, setLoaded] = useState(false)
+    const [validData, setValid] = useState(true)
     useEffect(() =>{
 
         const fetchBooks = async()=>{
             const response = await fetch("https://bookstore-git-main-diyararashid123.vercel.app/books")
+            if (response.status === 500){
+                setValid(false)
+            }
+            else{
+                setLoaded(true)
+            }
+            setValid(false)
             const res = await response.json()
             setBooks(res)
-            console.log(allBooks)
         }
         fetchBooks();
 
@@ -24,16 +34,23 @@ function AllBooks(){
 
 
     return(
-        <div className="flex flex-wrap gap-4 items-center m-6 flex-1 content-start ">
-        {allBooks.map((book) =>(
-            <div key = {book.id}>
-                <img className ="w-32 mb-2" src ="src/assets/Samplebook.png"/>
-                <div className="px-2">
-                    <div>{book.title}</div>
-                    <div>{book.price.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+    <div className="w-full">
+        <h1 className="text-3xl p-4">All books</h1>
+            <div className="grid content-start items-stretch my-4">
+            {allBooks && (
+                <div className="flex flex-wrap gap-4 mx-4">
+                    {allBooks.map((book) =>(
+                        <Book book = {book} key={book.id}/>
+                    ))}
                 </div>
+            )}
+            {!dataLoaded  &&(
+                <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
+            )}
+            {!validData &&(
+                <h1 className="justify-self-center">Could not load data</h1>
+            )}
             </div>
-        ))}
         </div>
     )
 }
