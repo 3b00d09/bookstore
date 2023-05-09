@@ -6,7 +6,8 @@ interface BookData{
     id: number,
     title: string,
     price: number,
-    description: string
+    description: string,
+    category: Array<Int16Array>
 }
 
 function AllBooks(){
@@ -17,14 +18,13 @@ function AllBooks(){
     useEffect(() =>{
 
         const fetchBooks = async()=>{
-            const response = await fetch("https://bookstore-git-main-diyararashid123.vercel.app/books")
+            const response = await fetch("https://bookstore-eight-xi.vercel.app/books")
             if (response.status === 500){
                 setValid(false)
             }
             else{
                 setLoaded(true)
             }
-            setValid(false)
             const res = await response.json()
             setBooks(res)
         }

@@ -4,6 +4,7 @@ interface BookProps {
       title: string;
       price: number;
       description: string;
+      category: Array<Int16Array>
     };
   }
 
@@ -12,9 +13,9 @@ function Book(props: BookProps) {
     return (
       <div className="flex flex-col items-stretch">
         <img className ="w-32" src ="src/assets/Samplebook.png"/>
-        <div className="p-2 bg-gray-900 h-full">
-            <div>{book.title}</div>
-            <div>{book.price.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })}</div>
+        <div className="w-32 p-2 bg-zinc-900 h-full">
+            <div className="py-1">{book.title}</div>
+            <div>£{book.price}</div>
         </div>
       </div>
     );
