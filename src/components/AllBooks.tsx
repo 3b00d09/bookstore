@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Book from "./Book"
+import Category from "./Category"
 import "../App.css"
 
 interface BookData{
@@ -34,24 +35,29 @@ function AllBooks(){
 
 
     return(
-    <div className="w-full">
-        <h1 className="text-3xl p-4">All books</h1>
-            <div className="grid content-start items-stretch my-4">
-            {allBooks && (
-                <div className="flex flex-wrap gap-4 mx-4">
-                    {allBooks.map((book) =>(
-                        <Book book = {book} key={book.id}/>
-                    ))}
+    <>
+        <div className="w-full">
+            <h1 className="text-3xl p-4">All books</h1>
+                <div className="grid content-start items-stretch my-4">
+                {allBooks && (
+                    <div className="flex flex-wrap gap-4 mx-4">
+                        {allBooks.map((book) =>(
+                            <Book book = {book} key={book.id}/>
+                        ))}
+                    </div>
+                )}
+                {!dataLoaded  &&(
+                    <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
+                )}
+                {!validData &&(
+                    <h1 className="justify-self-center">Could not load data</h1>
+                )}
                 </div>
-            )}
-            {!dataLoaded  &&(
-                <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
-            )}
-            {!validData &&(
-                <h1 className="justify-self-center">Could not load data</h1>
-            )}
             </div>
-        </div>
+
+        <h1>Romance</h1>
+        <Category />
+    </>
     )
 }
 

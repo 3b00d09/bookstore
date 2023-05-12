@@ -24,7 +24,7 @@ function SideBar(){
             <ul>
                 {categories &&(
                     categories.map((category) =>{
-                        return <li>{category.name}</li>
+                        return <li key={category.id}>{category.name}</li>
                     })
                 )}
             </ul>
