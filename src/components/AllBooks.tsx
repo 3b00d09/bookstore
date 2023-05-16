@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
-import Book from "./Book"
-import Category from "./Category"
+import Category from "./Category";
+import Section from "./Section";
 import "../App.css"
 
-interface BookData{
-    id: number,
-    title: string,
-    price: number,
-    description: string,
-    category: Array<Int16Array>
-}
+import { BookData } from "./Book";
 
 function AllBooks(){
 
@@ -37,14 +31,14 @@ function AllBooks(){
     return(
     <>
         <div className="w-full">
+            <h1 className="text-3xl p-4">Featured</h1>
+                <div className="grid content-start items-stretch my-4">
+                    <div className="justify-self-center text-3xl">Come back later for this section</div>
+                </div>
             <h1 className="text-3xl p-4">All books</h1>
                 <div className="grid content-start items-stretch my-4">
                 {allBooks && (
-                    <div className="flex flex-wrap gap-4 mx-4">
-                        {allBooks.map((book) =>(
-                            <Book book = {book} key={book.id}/>
-                        ))}
-                    </div>
+                    <Section books={allBooks} />
                 )}
                 {!dataLoaded  &&(
                     <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
@@ -53,10 +47,7 @@ function AllBooks(){
                     <h1 className="justify-self-center">Could not load data</h1>
                 )}
                 </div>
-            </div>
-
-        <h1>Romance</h1>
-        <Category />
+        </div>
     </>
     )
 }

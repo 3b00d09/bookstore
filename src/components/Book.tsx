@@ -1,12 +1,14 @@
 interface BookProps {
-    book: {
-      id: number;
-      title: string;
-      price: number;
-      description: string;
-      category: Array<Int16Array>
-    };
+    book: BookData
   }
+
+export interface BookData{
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: Array<Int16Array>
+}
 
 function Book(props: BookProps) {
     const book = props.book  
