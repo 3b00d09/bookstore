@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Category from "./Category";
 import Section from "./Section";
 import "../App.css"
 
@@ -31,11 +30,11 @@ function AllBooks(){
     return(
     <>
         <div className="w-full">
-            <h1 className="text-3xl p-4">Featured</h1>
+            <h1 className="text-3xl py-4">Featured</h1>
                 <div className="grid content-start items-stretch my-4">
                     <div className="justify-self-center text-3xl">Come back later for this section</div>
                 </div>
-            <h1 className="text-3xl p-4">All books</h1>
+            <h1 className="text-3xl py-4">All books</h1>
                 <div className="grid content-start items-stretch my-4">
                 {allBooks && (
                     <Section books={allBooks} />
