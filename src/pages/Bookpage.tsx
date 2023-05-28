@@ -33,6 +33,10 @@ export default function BookPage(){
           console.log("Book added to cart:", book);
         }
       };
+
+      const processPurchase = () =>{
+        return;
+      }
       
 
     return (
@@ -42,6 +46,7 @@ export default function BookPage(){
                 <div>{book.title}</div>
                 <div>{book.price}</div>
                 <button onClick={addToCart}>Add to cart</button>
+                <button onClick={processPurchase}>Purchase</button>
             </React.Fragment>
             : 
             <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}

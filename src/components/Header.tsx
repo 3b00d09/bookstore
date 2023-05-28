@@ -1,4 +1,4 @@
-import { SignInButton, SignOutButton, SignUpButton, UserButton, useUser, SignedIn, SignedOut} from "@clerk/clerk-react";
+import { SignInButton, SignUpButton, UserButton, useUser, SignedIn, SignedOut} from "@clerk/clerk-react";
 import {Link} from "react-router-dom";
 import Search from "./Search";
 
@@ -9,22 +9,16 @@ function Header(){
             <Search />
             <SignedIn>
                 <ul className ="list-none flex justify-center items-center flex-wrap gap-4 basis-1/4">
-                    <li className ="">
+                    <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
                         <Link to="/">Home</Link>
-                        </li>
-                        <li className ="">
+                    </li>
+                    <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
                         <Link to="/create">Post book</Link>
-                        </li>
-                        <li className ="">
-                            <Link to="/wishlist">Wishlist</Link>
-                        </li>
-                        <li className ="">
+                    </li>
+                    <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
                             <Link to="/cart">Cart</Link>
-                        </li>
-                        <li className ="">
-                            <SignOutButton />
-                        </li>
-                    </ul>
+                    </li>
+                </ul>
             </SignedIn>
             <SignedOut>
                 <ul className ="list-none flex justify-center items-center flex-wrap gap-4">
@@ -45,10 +39,12 @@ function Header(){
 function Logo(){
     const user = useUser()
     return(
-        <div className ="flex justify-center items-center gap-4 flex-wrap basis-1/4">
-            <UserButton />
-            {user.user?.username}
-        </div>
+        <Link to="/profile">
+            <div className ="flex justify-center items-center gap-4 flex-wrap hover:bg-gray-700 hover:cursor-pointer p-2">
+                <UserButton />
+                {user.user?.username}
+            </div>
+        </Link>
     )
 }
 

@@ -25,9 +25,9 @@ function SideBar(){
                 {categories &&(
                     categories.map((category) =>{
                         return (
-                        <div className="flex gap-1 justify-center align-center w-max">
+                        <div key={category.id} className="flex gap-1 justify-center align-center w-max">
                             <input type="checkbox"></input>
-                            <li key={category.id}>{category.name}</li>
+                            <li>{category.name}</li>
                         </div>
                         )
                     })

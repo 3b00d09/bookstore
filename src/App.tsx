@@ -3,7 +3,7 @@ import './App.css'
 import React from "react"
 import { useEffect } from "react";
 import {useUser} from "@clerk/clerk-react";
-import {Route, Routes} from "react-router-dom"
+import {Route, Routes, useLocation} from "react-router-dom"
 import PostBook from './components/PostBook/PostBook';
 import Header  from './components/Header';
 import Home from './pages/Home';
@@ -13,12 +13,14 @@ import CookiePolicy from './pages/CookiePolicy';
 import BookPage from './pages/Bookpage';
 import SideBar from './components/SideBar';
 import Cart from './pages/Cart';
+import Profile from './pages/Profile';
 
 
 
 function App() {
 
   const user = useUser();
+  const location = useLocation();
 
   useEffect(() =>{
     const cart = localStorage.getItem("cart")
@@ -35,7 +37,7 @@ function App() {
         <CookieNotice />
         <Header />
         <div className='main-content flex-1 flex'>
-          <SideBar />
+          {!location.pathname.startsWith('/profile') && <SideBar />}
           <div className='w-full mx-7 px-4'>
             <Routes>
               <Route path ="/" element={<Home />} />
@@ -44,6 +46,7 @@ function App() {
               <Route path ="/cookies" element={<CookiePolicy />} />
               <Route path="/book/:id" element={<BookPage />} />
               <Route path = "/cart" element={<Cart />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </div>
         </div>
