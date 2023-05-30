@@ -14,6 +14,7 @@ import BookPage from './pages/Bookpage';
 import SideBar from './components/SideBar';
 import Cart from './pages/Cart';
 import Profile from './pages/Profile';
+import OrderHistory from './pages/userRoutes/OrderHistory';
 
 
 
@@ -46,7 +47,15 @@ function App() {
               <Route path ="/cookies" element={<CookiePolicy />} />
               <Route path="/book/:id" element={<BookPage />} />
               <Route path = "/cart" element={<Cart />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<Profile />}>
+                <Route path="" element={<OrderHistory />} />
+                <Route path ="purchased" element={<OrderHistory />} />
+                <Route path ="sold" element={<OrderHistory />} />
+                <Route path="selling" element={<OrderHistory />} />
+                <Route path ="wishlist" element={<OrderHistory />} />
+                <Route path ="cart" element={<OrderHistory />} />
+                <Route path ="settings" element={<OrderHistory />} /> 
+              </Route>
             </Routes>
           </div>
         </div>
