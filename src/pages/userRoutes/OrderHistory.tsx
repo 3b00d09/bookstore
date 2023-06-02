@@ -1,6 +1,6 @@
 function OrderHistory(){
     return(
-        <div>ALOOOOOOOOOOO</div>
+        <div>Order History</div>
     )
 }
 

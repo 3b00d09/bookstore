@@ -14,7 +14,7 @@ import BookPage from './pages/Bookpage';
 import SideBar from './components/SideBar';
 import Cart from './pages/Cart';
 import Profile from './pages/Profile';
-import OrderHistory from './pages/userRoutes/OrderHistory';
+import { OrderHistory, ProfileCart, Selling, SoldHistory, ProfileIndex, UserSettings, Wishlist } from './pages/userRoutes';
 
 
 
@@ -48,13 +48,13 @@ function App() {
               <Route path="/book/:id" element={<BookPage />} />
               <Route path = "/cart" element={<Cart />} />
               <Route path="/profile" element={<Profile />}>
-                <Route path="" element={<OrderHistory />} />
+                <Route path="" element={<ProfileIndex />} />
                 <Route path ="purchased" element={<OrderHistory />} />
-                <Route path ="sold" element={<OrderHistory />} />
-                <Route path="selling" element={<OrderHistory />} />
-                <Route path ="wishlist" element={<OrderHistory />} />
-                <Route path ="cart" element={<OrderHistory />} />
-                <Route path ="settings" element={<OrderHistory />} /> 
+                <Route path ="sold" element={<SoldHistory />} />
+                <Route path="selling" element={<Selling />} />
+                <Route path ="wishlist" element={<Wishlist />} />
+                <Route path ="cart" element={<ProfileCart />} />
+                <Route path ="settings" element={<UserSettings />} /> 
               </Route>
             </Routes>
           </div>
