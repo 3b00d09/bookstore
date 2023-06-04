@@ -25,16 +25,20 @@ export default function BookPage(){
     const addToCart = () => {
         // we tell typescript to parse localstorage as an array of objects with bookdata type (i think ???)
         const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
-
         if (book) {
         // Append the book to the existing cart or create a new cart with only the book we are adding
-          const updatedCart = [...cart, book]; 
+          book.quantity = 1;
+          const cartItem = {
+            id: book.id,
+            quantity: 1
+          }
+          const updatedCart = [...cart, cartItem]; 
           localStorage.setItem("cart", JSON.stringify(updatedCart));
           console.log("Book added to cart:", book);
         }
       };
 
-      const processPurchase = () =>{
+      const addToWishlist = () =>{
         return;
       }
       
@@ -46,7 +50,7 @@ export default function BookPage(){
                 <div>{book.title}</div>
                 <div>{book.price}</div>
                 <button onClick={addToCart}>Add to cart</button>
-                <button onClick={processPurchase}>Add to wishlist</button>
+                <button onClick={addToWishlist}>Add to wishlist</button>
             </React.Fragment>
             : 
             <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}

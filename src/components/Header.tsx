@@ -1,4 +1,4 @@
-import { SignInButton, SignUpButton, UserButton, useUser, SignedIn, SignedOut} from "@clerk/clerk-react";
+import { SignInButton, SignUpButton, UserButton, useUser, SignedIn, SignedOut, SignOutButton} from "@clerk/clerk-react";
 import {Link} from "react-router-dom";
 import Search from "./Search";
 
@@ -17,6 +17,9 @@ function Header(){
                     </li>
                     <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
                             <Link to="/cart">Cart</Link>
+                    </li>
+                    <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
+                            <SignOutButton />
                     </li>
                 </ul>
             </SignedIn>

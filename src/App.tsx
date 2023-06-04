@@ -25,10 +25,28 @@ function App() {
 
   useEffect(() =>{
     const cart = localStorage.getItem("cart")
+    const interactions = localStorage.getItem("interactions")
+
+    if (interactions === null){
+      let arr: Array<Int16Array> = []
+      localStorage.setItem("interactions", JSON.stringify(arr))
+    }
+
     if (cart === null){
       let arr: Array<Int16Array> = []
       localStorage.setItem("cart", JSON.stringify(arr))
     }
+
+    setInterval(() =>{
+      const newInteractions = JSON.parse(localStorage.getItem("interactions") || "[]")
+      if(newInteractions.length === 0) return
+    
+      // send new interactions here
+
+      // reset interactions after we send them
+      localStorage.setItem("interactions", JSON.stringify([]))
+    }, 1000 * 10)
+
   }, [])
 
   // need to wait for user auth state to load first otherwise header delays
