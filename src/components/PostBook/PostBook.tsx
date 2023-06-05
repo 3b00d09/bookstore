@@ -8,6 +8,7 @@ function PostBook(){
     const [bookTitle, setBookTitle] = useState("");
     const [bookDescription, setBookDescription] = useState("");
     const [bookPrice, setBookPrice] = useState("");
+    const [bookStock, setBookStock] = useState("")
 
 
     const handleTitleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +22,10 @@ function PostBook(){
       const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBookPrice(e.target.value);
       };
+
+      const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setBookStock(e.target.value);
+      };
     
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -28,7 +33,9 @@ function PostBook(){
         const Book = {
             title: bookTitle,
             price: parseFloat(bookPrice),
-            description: bookDescription
+            description: bookDescription,
+            categories: [2],
+            stock: parseInt(bookStock)
         }
 
         const response = await fetch("https://bookstore-git-main-diyararashid123.vercel.app/book/create",{
@@ -49,6 +56,7 @@ function PostBook(){
             <input type ="text" placeholder="Book title" onChange={handleTitleChange}></input>
             <textarea placeholder="Book description" onChange={handleDescriptionChange}></textarea>
             <input type ="number" placeholder="Book price" onChange={handlePriceChange}></input>
+            <input type="number" placeholder="Stock " onChange={handleStockChange}></input>
             <button type="submit">SUBMIT</button>
         </form>
     )

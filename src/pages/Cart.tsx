@@ -27,11 +27,12 @@ export default function Cart (){
             userId: userId,
             cart: cartItems
         }
-
-        console.log(cart)
         
-        const response = await fetch("https://bookstore-git-main-diyararashid123.vercel.app/book/buy", {
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/book/buy", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+              },
             body: JSON.stringify(cart)
         })
 
