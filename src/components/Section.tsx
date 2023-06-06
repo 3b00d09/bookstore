@@ -1,9 +1,8 @@
 import  {BookData}  from "./Book";
 import Book from "./Book";
-import {useState, useEffect} from "react";
 
 interface sectionProps{
-    books: BookData[]
+    books: BookData[],
 }
 
 

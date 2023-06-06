@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import Section from "./Section";
 import "../App.css"
-
 import { BookData } from "./Book";
 
-function AllBooks(){
+type FilterType = {
+    categoryFilter: string[];
+    priceFilter: number;
+    languageFilter: string;
+  };
+
+function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
 
     const [allBooks, setBooks] = useState<BookData[]>([])
     const [dataLoaded, setLoaded] = useState(false)
@@ -32,7 +37,13 @@ function AllBooks(){
         <div className="w-full">
             <h1 className="text-3xl py-4">Featured</h1>
                 <div className="grid content-start items-stretch my-4">
-                    <div className="justify-self-center text-3xl">Come back later for this section</div>
+                    {/* {<div className="justify-self-center text-3xl">Come back later for this section</div>} */}
+
+                    {categoryFilter.map((filter) => filter)}
+                    <br />
+                    {languageFilter}
+                    <br />
+                    {priceFilter}
                 </div>
             <h1 className="text-3xl py-4">All books</h1>
                 <div className="grid content-start items-stretch my-4">
