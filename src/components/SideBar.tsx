@@ -43,15 +43,18 @@ function SideBar({categoryFilter, setCategoryFilter, priceFilter, setPriceFilter
         languageCheckboxes.forEach((element:any) =>{
             if(e.target !== element) element.checked = false;
         })
-        setLanguageFilter(e.target.value)
-        
+
+        // this just clears filter when the function is called by an element that was unchecked
+        e.target.checked ? setLanguageFilter(e.target.value) : setLanguageFilter("") 
     }
 
     const handlePriceCheckbox = async(e:React.ChangeEvent<HTMLInputElement>) =>{
         priceCheckboxes.forEach((element:any) =>{
             if(e.target !== element) element.checked = false;
         })
-        setPriceFilter(parseInt(e.target.value))    
+
+        // this just clears filter when the function is called by an element that was unchecked
+        e.target.checked ? setPriceFilter(parseInt(e.target.value)) : setPriceFilter(0)   
     }
 
 

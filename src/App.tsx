@@ -6,11 +6,13 @@ import {useUser} from "@clerk/clerk-react";
 import CookieNotice from './components/CookieNotice';
 import MainContent from './components/MainContent';
 import Header from './components/Header';
+import {  QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 
 function App() {
 
   const user = useUser();
+  const queryClient = new QueryClient()
 
 
   useEffect(() =>{
@@ -43,9 +45,11 @@ function App() {
   if (user.isLoaded){
     return (
       <React.Fragment>
-        <CookieNotice />
-        <Header />
-        <MainContent />
+        <QueryClientProvider client={queryClient}>
+          <CookieNotice />
+          <Header />
+          <MainContent />
+        </QueryClientProvider>
       </React.Fragment>
     )
   }

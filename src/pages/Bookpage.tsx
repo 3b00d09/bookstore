@@ -9,6 +9,8 @@ export default function BookPage(){
     const { id } = useParams()
     const [book, setBook] = useState<BookData>()
 
+
+
     useEffect(() =>{
 
         const fetchBook = async () => {
@@ -44,13 +46,18 @@ export default function BookPage(){
       
 
     return (
-        <div className="flex flex-wrap justify-around content-center h-screen mt-2">
+        <div className="flex flex-wrap gap-4 items-start mt-16">
             {book ? 
             <React.Fragment>
-                <div>{book.title}</div>
-                <div>{book.price}</div>
-                <button onClick={addToCart}>Add to cart</button>
-                <button onClick={addToWishlist}>Add to wishlist</button>
+                <img className="w-64 ml-16" src ="../src/assets/Samplebook.png"/>
+                <div className="mx-12 bg-zinc-800 p-4 rounded-lg h-48">
+                  <h1 className="text-3xl">{book.title}</h1>
+                  <div>{book.price}</div>
+                </div>
+                <div className="mx-16">
+                  <button onClick={addToCart}>Add to cart</button>
+                  <button onClick={addToWishlist}>Add to wishlist</button>
+                </div>
             </React.Fragment>
             : 
             <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}

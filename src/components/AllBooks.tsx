@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import Section from "./Section";
 import "../App.css"
-import { BookData } from "./Book";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react"
 
 type FilterType = {
     categoryFilter: string[];
@@ -11,26 +11,27 @@ type FilterType = {
 
 function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
 
-    const [allBooks, setBooks] = useState<BookData[]>([])
-    const [dataLoaded, setLoaded] = useState(false)
-    const [validData, setValid] = useState(true)
-    useEffect(() =>{
+    const queryClient = useQueryClient()
 
-        const fetchBooks = async()=>{
-            const response = await fetch("https://bookstore-eight-xi.vercel.app/books")
-            if (response.status === 500){
-                setValid(false)
-            }
-            else{
-                setLoaded(true)
-            }
+    const query = useQuery({queryKey:["books", categoryFilter], queryFn: fetchAllBooks})
+
+    async function fetchAllBooks(){
+        
+        // my backend dev decided to return different types of json so here we are
+
+        if(categoryFilter.length === 0){
+            const response = await fetch(`https://bookstore-eight-xi.vercel.app/books`)
             const res = await response.json()
-            setBooks(res)
+            return res
         }
-        fetchBooks();
-
-    }, [])
-
+        else{
+            const queryString = categoryFilter.join(",")
+            console.log(queryString)
+            const response = await fetch(`https://bookstore-eight-xi.vercel.app/categories/books/?names=${queryString}`)
+            const res = await response.json()
+            return res.book
+        }
+    }
 
     return(
     <>
@@ -45,15 +46,15 @@ function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
                     <br />
                     {priceFilter}
                 </div>
-            <h1 className="text-3xl py-4">All books</h1>
+            <h1 className="text-3xl py-4">{categoryFilter.length === 0 ? "All Books" : `${categoryFilter[0]}`}</h1>
                 <div className="grid content-start items-stretch my-4">
-                {allBooks && (
-                    <Section books={allBooks} />
+                {query?.data && (
+                    <Section books={query.data} />
                 )}
-                {!dataLoaded  &&(
+                {query.isLoading  &&(
                     <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
                 )}
-                {!validData &&(
+                {query.error &&(
                     <h1 className="justify-self-center">Could not load data</h1>
                 )}
                 </div>
