@@ -29,17 +29,40 @@ function App() {
       localStorage.setItem("cart", JSON.stringify(arr))
     }
 
-    setInterval(() =>{
+  }, [])
+
+  const sendInteractions = async (newInteractions:any) =>{
+
+    // send new interactions here
+    const interactions = {
+      userId: user.user?.id,
+      interactions: newInteractions
+    }
+
+    console.log(interactions)
+    const response = await fetch("https://bookstore-eight-xi.vercel.app/interactions",{
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+        },
+      body: JSON.stringify(interactions)
+    })
+    const res = await response.json()
+    console.log(res)
+
+    // reset interactions after we send them
+    localStorage.setItem("interactions", JSON.stringify([]))
+  }
+
+
+  if (user.user){
+    setInterval(async () =>{
       const newInteractions = JSON.parse(localStorage.getItem("interactions") || "[]")
       if(newInteractions.length === 0) return
-    
-      // send new interactions here
+      sendInteractions(newInteractions);
+    }, 1000 * 5)
+  }
 
-      // reset interactions after we send them
-      localStorage.setItem("interactions", JSON.stringify([]))
-    }, 1000 * 10)
-
-  }, [])
 
   // need to wait for user auth state to load first otherwise header delays
   if (user.isLoaded){

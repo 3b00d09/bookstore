@@ -29,24 +29,18 @@ function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
             console.log(queryString)
             const response = await fetch(`https://bookstore-eight-xi.vercel.app/categories/books/?names=${queryString}`)
             const res = await response.json()
-            return res.book
+            return res
         }
     }
 
     return(
     <>
         <div className="w-full">
-            <h1 className="text-3xl py-4">Featured</h1>
+            <h1 className="text-3xl py-4 bg-green-800 rounded-lg mt-6 p-2">Featured</h1>
                 <div className="grid content-start items-stretch my-4">
-                    {/* {<div className="justify-self-center text-3xl">Come back later for this section</div>} */}
-
-                    {categoryFilter.map((filter) => filter)}
-                    <br />
-                    {languageFilter}
-                    <br />
-                    {priceFilter}
+                    {<div className="justify-self-center text-3xl">Come back later for this section</div>}
                 </div>
-            <h1 className="text-3xl py-4">{categoryFilter.length === 0 ? "All Books" : `${categoryFilter[0]}`}</h1>
+            <h1 className="text-3xl py-4 bg-gray-800 rounded-lg mt-6 p-2">{categoryFilter.length === 0 ? "All Books" : `${categoryFilter[0]}`}</h1>
                 <div className="grid content-start items-stretch my-4">
                 {query?.data && (
                     <Section books={query.data} />

@@ -22,9 +22,8 @@ export default function Cart (){
     }, [])
 
     const processPurchase = async () =>{
-        const userId = user.user?.id
         const cart = {
-            userId: userId,
+            userId: user.user?.id,
             cart: cartItems
         }
         
