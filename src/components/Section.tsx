@@ -1,5 +1,5 @@
-import  {BookData}  from "./Book";
-import Book from "./Book";
+import  {BookData}  from "./BookCard";
+import BookCard from "./BookCard";
 
 interface sectionProps{
     books: BookData[],
@@ -14,7 +14,7 @@ export default function Section(props: sectionProps){
                 <div>No books ahahahahahaah</div>
             )}
             {props.books.map((book) =>{
-                return <Book book = {book} key={book.id}/>
+                return <BookCard book = {book} key={book.id}/>
             })}
         </div>
         )

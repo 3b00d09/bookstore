@@ -11,6 +11,7 @@ export interface BookData{
   category: Array<Int16Array>;
   quantity: number;
   interactionsCount: number;
+  releaseDate: string
 }
 
 function Book(props: BookProps) {

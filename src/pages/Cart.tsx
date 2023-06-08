@@ -1,6 +1,6 @@
 import React from "react"
 import { useEffect, useState } from "react";
-import { BookData } from "../components/Book"
+import { BookData } from "../components/BookCard"
 import Section from "../components/Section";
 import { useUser } from "@clerk/clerk-react";
 
