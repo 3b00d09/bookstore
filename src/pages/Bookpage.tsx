@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import React from "react"
 import { useEffect, useState, useRef, useCallback } from "react";
 import { BookData } from "../components/BookCard"
+import { useUser } from "@clerk/clerk-react";
 import "../index.css"
 
 
@@ -9,6 +10,8 @@ import "../index.css"
 export default function BookPage(){
     const { id } = useParams()
     const [book, setBook] = useState<BookData>()
+    const [similarBooks, setSimilarBooks] = useState<BookData[]>()
+    const user = useUser()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
     
@@ -47,22 +50,27 @@ export default function BookPage(){
             setBook(res)
         }
 
+        const fetchSimilarBooks = async() =>{
+          const response = await fetch(`https://bookstore-eight-xi.vercel.app/books/similar/${id}/`)
+          const res = await response.json()
+          setSimilarBooks(res)
+        }
+
         fetchBook()
+        fetchSimilarBooks()
     }, [])
 
     useEffect(() =>{
       if(starDiv.current){
-        const rating = 4.5
-        if(Number.isInteger(rating)){
-          console.log("int")
+        const rating = 1
+        for (let i = 0; i<Math.floor(rating); i++){
+          starDiv.current.children[i].classList.add("active", "fa-solid")
         }
-        else{
-          for (let i = 0; i<Math.floor(rating); i++){
-            starDiv.current.children[i].classList.add("active")
-          }
-          starDiv.current.children[starDiv.current.children.length - 1].classList.add("fa-star-half", "active")
+        if(!Number.isInteger(rating)){
+          const lastStar = Math.ceil(rating) - 1
+          starDiv.current.children[lastStar].classList.add("fa-star-half-stroke", "active")
         }
-      }
+        }
     },[book])
 
       
@@ -84,54 +92,40 @@ export default function BookPage(){
                     <button onClick={addToCart}>Add to cart</button>
                     <button onClick={addToWishlist}>Add to wishlist</button>
                   </div>
-
                   <div className="grow w-1/12 overflow-auto h-96 hidden xl:block">
                     <h1 className="text-center">Similar Books</h1>
-
-                    <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
+                    {similarBooks?.map((book) =>{
+                    return(
+                      <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
                       <img src="../src/assets/Samplebook.png" className="w-20" />
                       <div>
-                        <p>Book title</p>
+                        <p>{book.title}</p>
                       </div>
                     </div>
-
-                    <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                      <img src="../src/assets/Samplebook.png" className="w-20" />
-                      <div>
-                        <p>Book title</p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                      <img src="../src/assets/Samplebook.png" className="w-20" />
-                      <div>
-                        <p>Book title</p>
-                      </div>
-
-                    </div>
-                    <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                      <img src="../src/assets/Samplebook.png" className="w-20" />
-                      <div>
-                        <p>Book title</p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                      <img src="../src/assets/Samplebook.png" className="w-20" />
-                      <div>
-                        <p>Book title</p>
-                      </div>
-                    </div>
+                    )
+                  })}
                   </div>
                 </div>
-                <h1 className="text-3xl mt-16">User Reviews</h1>
+                <h1 className="text-3xl mt-16">Reviews</h1>
                 <p className="mt-2" ref={starDiv}>
-                  <i className="fa-regular fa-star fa-2xl"></i>
-                  <i className="fa-regular fa-star fa-2xl"></i>
-                  <i className="fa-regular fa-star fa-2xl"></i>
-                  <i className="fa-regular fa-star fa-2xl"></i>
-                  <i className="fa-regular fa-star fa-2xl"></i>
+                  <i className="fa-star fa-regular fa-2xl"></i>
+                  <i className="fa-star fa-regular fa-2xl"></i>
+                  <i className="fa-star fa-regular fa-2xl"></i>
+                  <i className="fa-star fa-regular fa-2xl"></i>
+                  <i className="fa-star fa-regular fa-2xl"></i>
                 </p>
+
+                <div className="mt-6 border-8 p-4 rounded-lg border-zinc-900">
+                  <div className="flex flex-wrap gap-4 items-center">
+                    <img src={user.user?.profileImageUrl} className="w-12 rounded-full"></img>
+                    {user.user?.username}
+                  </div>
+
+                  <div>
+                    THIS IS A REALLY NICE BOOK WOW!!!!! SO COOL!!! OMG 
+                  </div>
+
+                </div>
               </React.Fragment>
             : 
             <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}
