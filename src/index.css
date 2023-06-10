@@ -118,3 +118,31 @@ button:focus-visible {
 .active{
   color: yellow;
 }
+
+/** https://coder-coder.com/background-image-opacity/ **/
+.banner{
+  position: relative;
+}
+
+.banner::before{
+  content: "";
+  background-image: url("./assets/bookShelve.jpeg");
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.4;
+}
+
+
+.banner img {
+  position: relative;
+  box-shadow: 2px 2px 4px rgba(230, 219, 219, 0.87);
+}
+
+.banner h1{
+  position: relative;
+  font-family: 'Times New Roman', Times, serif;
+}

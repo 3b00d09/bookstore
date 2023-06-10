@@ -2,6 +2,7 @@ import Section from "./Section";
 import "../App.css"
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react"
+import HomeSection from "./HomeSection";
 
 type FilterType = {
     categoryFilter: string[];
@@ -36,10 +37,10 @@ function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
     return(
     <>
         <div className="w-full">
-            <h1 className="text-3xl py-4 bg-green-800 rounded-lg mt-6 p-2">Featured</h1>
-                <div className="grid content-start items-stretch my-4">
-                    {<div className="justify-self-center text-3xl">Come back later for this section</div>}
-                </div>
+            {query?.data &&(
+            <HomeSection heading={"Browse Through our Featured Books"} books={query.data}/>
+            )}
+
             <h1 className="text-3xl py-4 bg-gray-800 rounded-lg mt-6 p-2">{categoryFilter.length === 0 ? "All Books" : `${categoryFilter[0]}`}</h1>
                 <div className="grid content-start items-stretch my-4">
                 {query?.data && (

@@ -1,5 +1,6 @@
 
 import AllBooks from "../components/AllBooks";
+import "../index.css"
 
 type FilterType = {
     categoryFilter: string[];
@@ -12,7 +13,7 @@ function Home({categoryFilter, priceFilter, languageFilter}: FilterType){
 
     
     return(
-        <div className="">
+        <div>
             <AllBooks categoryFilter={categoryFilter} languageFilter={languageFilter} priceFilter={priceFilter} />
         </div>
     )

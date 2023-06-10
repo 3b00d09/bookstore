@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom"
 import React from "react"
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BookData } from "../components/BookCard"
 import { useUser } from "@clerk/clerk-react";
 import "../index.css"
+import CreateReview from "../components/CreateReview";
 
 
 
@@ -32,8 +33,20 @@ export default function BookPage(){
         }
       };
 
-      const addToWishlist = () =>{
-        return;
+      const addToWishlist = async() =>{
+        const data = {
+          userId: user.user?.id,
+          bookId: id
+        }
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/addwishlist/add",{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+        const res = await response.json()
+        console.log(res)
       }
 
       useEffect(() =>{
@@ -56,8 +69,15 @@ export default function BookPage(){
           setSimilarBooks(res)
         }
 
+        const fetchReviews = async() =>{
+          const response = await fetch(`https://bookstore-eight-xi.vercel.app/review/${id}`)
+          const res = await response.json()
+          console.log(res)
+        }
+
         fetchBook()
         fetchSimilarBooks()
+        fetchReviews()
     }, [])
 
     useEffect(() =>{
@@ -115,7 +135,13 @@ export default function BookPage(){
                   <i className="fa-star fa-regular fa-2xl"></i>
                 </p>
 
-                <div className="mt-6 border-8 p-4 rounded-lg border-zinc-900">
+                <div>
+                  <p className="mt-6 opacity-80">Write a review...</p>
+
+                  <CreateReview bookId = {book.id}/>
+                </div>
+
+                {/* <div className="mt-6 border-8 p-4 rounded-lg border-zinc-900">
                   <div className="flex flex-wrap gap-4 items-center">
                     <img src={user.user?.profileImageUrl} className="w-12 rounded-full"></img>
                     {user.user?.username}
@@ -125,6 +151,42 @@ export default function BookPage(){
                     THIS IS A REALLY NICE BOOK WOW!!!!! SO COOL!!! OMG 
                   </div>
 
+                </div> */}
+
+                <div className="flex items-center space-x-4 mb-8">
+                  {/* Left section */}
+                  <div className="flex-shrink-0">
+                    <img className="w-12 h-12 rounded-full" src={user.user?.profileImageUrl} alt="User" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Username</h3>
+                  </div>
+
+                  {/* Right section */}
+                  <div className="flex-grow">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xl font-semibold">4/5</h4>
+                    </div>
+                    <p className="mt-2 text-gray-600">This book is nice, however, it is weird because there is rumbling? wtf? i thought rumbling was attack on titan? lol</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4 mb-8">
+                  {/* Left section */}
+                  <div className="flex-shrink-0">
+                    <img className="w-12 h-12 rounded-full" src={user.user?.profileImageUrl} alt="User" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">Username</h3>
+                  </div>
+
+                  {/* Right section */}
+                  <div className="flex-grow">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-xl font-semibold">4/5</h4>
+                    </div>
+                    <p className="mt-2 text-gray-600">This book is nice, however, it is weird because there is rumbling? wtf? i thought rumbling was attack on titan? lol</p>
+                  </div>
                 </div>
               </React.Fragment>
             : 
@@ -132,3 +194,22 @@ export default function BookPage(){
           </>
     )
 }
+
+
+// const reviews = {
+//   averageRating: 3,
+//   allReviews: [
+//     {
+//       user: "anon",
+//       comment: "ALOO"
+//     },
+//     {
+//       user: "anon",
+//       comment: "ALOO"
+//     },
+//     {
+//       user: "anon",
+//       comment: "ALOO"
+//     },
+//   ]
+// }
