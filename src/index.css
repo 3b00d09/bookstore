@@ -146,3 +146,59 @@ button:focus-visible {
   position: relative;
   font-family: 'Times New Roman', Times, serif;
 }
+
+
+.history-banner{
+  position: relative;
+  justify-content: center;
+  height: 300px;
+}
+
+.history-banner img {
+  position: relative;
+  box-shadow: 2px 2px 4px rgba(230, 219, 219, 0.87);
+}
+
+.history-banner::before{
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-image: url("./assets//HistoryBanner.jpg");
+  background-size: cover;
+  opacity: 0.1;
+}
+
+.history-banner h1{
+  align-self: center;
+  font-family: cursive;
+  font-size: 3rem;
+}
+
+.animate-up{
+  animation: centerToTop 0.2s forwards;
+}
+
+.animate-down{
+  animation: topToCenter 0.2s forwards;
+}
+
+@keyframes centerToTop {
+  from {
+    align-self: center;
+  }
+  to {
+    align-self: start;
+  }
+}
+
+@keyframes topToCenter {
+  from {
+    align-self: start;
+  }
+  to {
+    align-self: center;
+  }
+}

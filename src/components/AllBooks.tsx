@@ -1,7 +1,7 @@
 import Section from "./Section";
 import "../App.css"
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import HomeSection from "./HomeSection";
 
 type FilterType = {
@@ -13,6 +13,8 @@ type FilterType = {
 function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
 
     const queryClient = useQueryClient()
+    const paragraphTag = useRef<HTMLParagraphElement>(null)
+    const imagesDiv = useRef<HTMLDivElement>(null)
 
     const query = useQuery({queryKey:["books", categoryFilter], queryFn: fetchAllBooks})
 
@@ -34,9 +36,52 @@ function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
         }
     }
 
+    const handleHoverIn = (event: React.MouseEvent) =>{
+        const parent = event.target as HTMLDivElement
+        if(paragraphTag.current && imagesDiv.current){
+            parent.classList.remove("flex")
+            paragraphTag.current.classList.remove("animate-down")
+            paragraphTag.current.classList.add("animate-up")
+            imagesDiv.current.classList.add("flex")
+            imagesDiv.current.classList.remove("hidden")
+        }
+    }
+
+    const handleHoverOut = (event: React.MouseEvent) =>{
+        const parent = event.target as HTMLDivElement
+        if(paragraphTag.current && imagesDiv.current){
+            parent.classList.add("flex")
+            paragraphTag.current.classList.remove("animate-up")
+            paragraphTag.current.classList.add("animate-down")
+            imagesDiv.current.classList.remove("flex")
+            imagesDiv.current.classList.add("hidden")
+        }
+    }
+
     return(
     <>
         <div className="w-full">
+            <div className="flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
+                <h1 className="text-3xl" ref={paragraphTag}>Featued Books</h1>
+                <div className="flex p-2 mt-6 justify-center gap-16 hidden" ref={imagesDiv}>
+                <div>
+                    <img src="../src/assets/TestCover.jpg" className="h-10 sm:20 md:h-16 lg:h-24 xl:h-32 2xl:h-44 rounded-lg"></img>
+                </div>
+                <div>
+                    <img src="../src/assets/TestCover.jpg" className="h-10 sm:20 md:h-16 lg:h-24 xl:h-32 2xl:h-44 rounded-lg"></img>
+                </div>
+                <div>
+                    <img src="../src/assets/TestCover.jpg" className="h-10 sm:20 md:h-16 lg:h-24 xl:h-32 2xl:h-44 rounded-lg"></img>
+                </div>
+                <div>
+                    <img src="../src/assets/TestCover.jpg" className="h-10 sm:20 md:h-16 lg:h-24 xl:h-32 2xl:h-44 rounded-lg"></img>
+                </div>
+                <div>
+                    <img src="../src/assets/TestCover.jpg" className="h-10 sm:20 md:h-16 lg:h-24 xl:h-32 2xl:h-44 rounded-lg"></img>
+                </div>
+
+            </div>
+            </div>
             {query?.data &&(
             <HomeSection heading={"Browse Through our Featured Books"} books={query.data}/>
             )}

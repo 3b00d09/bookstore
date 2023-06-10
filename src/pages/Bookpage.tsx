@@ -12,6 +12,7 @@ export default function BookPage(){
     const { id } = useParams()
     const [book, setBook] = useState<BookData>()
     const [similarBooks, setSimilarBooks] = useState<BookData[]>()
+    const [bookReviews, setBookReviews] = useState(0)
     const user = useUser()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
@@ -40,10 +41,10 @@ export default function BookPage(){
         }
         const response = await fetch("https://bookstore-eight-xi.vercel.app/addwishlist/add",{
           method: "POST",
+          body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
+          }
         })
         const res = await response.json()
         console.log(res)
@@ -72,7 +73,7 @@ export default function BookPage(){
         const fetchReviews = async() =>{
           const response = await fetch(`https://bookstore-eight-xi.vercel.app/review/${id}`)
           const res = await response.json()
-          console.log(res)
+          setBookReviews(res)
         }
 
         fetchBook()
@@ -82,7 +83,7 @@ export default function BookPage(){
 
     useEffect(() =>{
       if(starDiv.current){
-        const rating = 1
+        const rating= bookReviews
         for (let i = 0; i<Math.floor(rating); i++){
           starDiv.current.children[i].classList.add("active", "fa-solid")
         }
@@ -91,7 +92,7 @@ export default function BookPage(){
           starDiv.current.children[lastStar].classList.add("fa-star-half-stroke", "active")
         }
         }
-    },[book])
+    },[bookReviews])
 
       
 
@@ -126,14 +127,17 @@ export default function BookPage(){
                   })}
                   </div>
                 </div>
-                <h1 className="text-3xl mt-16">Reviews</h1>
-                <p className="mt-2" ref={starDiv}>
-                  <i className="fa-star fa-regular fa-2xl"></i>
-                  <i className="fa-star fa-regular fa-2xl"></i>
-                  <i className="fa-star fa-regular fa-2xl"></i>
-                  <i className="fa-star fa-regular fa-2xl"></i>
-                  <i className="fa-star fa-regular fa-2xl"></i>
-                </p>
+                <div className="flex flex-wrap gap-4  mt-16" >
+                  <h1 className="text-3xl">Rating</h1>
+                  <p ref={starDiv}>
+                    <i className="fa-star fa-regular fa-2xl"></i>
+                    <i className="fa-star fa-regular fa-2xl"></i>
+                    <i className="fa-star fa-regular fa-2xl"></i>
+                    <i className="fa-star fa-regular fa-2xl"></i>
+                    <i className="fa-star fa-regular fa-2xl"></i>
+                  </p>
+                </div>
+
 
                 <div>
                   <p className="mt-6 opacity-80">Write a review...</p>
@@ -141,19 +145,9 @@ export default function BookPage(){
                   <CreateReview bookId = {book.id}/>
                 </div>
 
-                {/* <div className="mt-6 border-8 p-4 rounded-lg border-zinc-900">
-                  <div className="flex flex-wrap gap-4 items-center">
-                    <img src={user.user?.profileImageUrl} className="w-12 rounded-full"></img>
-                    {user.user?.username}
-                  </div>
+                <h1 className="text-3xl mt-4">Reviews</h1>
 
-                  <div>
-                    THIS IS A REALLY NICE BOOK WOW!!!!! SO COOL!!! OMG 
-                  </div>
-
-                </div> */}
-
-                <div className="flex items-center space-x-4 mb-8">
+                <div className="flex items-center space-x-4 mb-8 mt-8">
                   {/* Left section */}
                   <div className="flex-shrink-0">
                     <img className="w-12 h-12 rounded-full" src={user.user?.profileImageUrl} alt="User" />

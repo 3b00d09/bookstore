@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import {useState} from "react"
+import {useRef, useState, useEffect} from "react"
 import { FormEvent } from 'react';
 
 
@@ -10,7 +10,10 @@ interface ReviewProps{
 export default function CreateReview(props: ReviewProps){
 
     const [review, setReview] = useState("")
-    const [rating, setRating] = useState(0) 
+    const [rating, setRating] = useState<Number>(0) 
+
+
+    const userRating = useRef<HTMLDivElement>(null)
     const user = useUser()
     const bookId = props.bookId
     
@@ -22,6 +25,8 @@ export default function CreateReview(props: ReviewProps){
             comment: review,
             rating: rating
         }
+
+        console.log(newReview)
 
         const response = await fetch("https://bookstore-eight-xi.vercel.app/review/create",{
             method:"POST",
@@ -35,6 +40,22 @@ export default function CreateReview(props: ReviewProps){
         console.log(res)
     }
 
+    const handleRatingClick = (event: any) =>{
+        if(userRating.current){
+
+            for(let i = 0; i < userRating.current.children.length; i++){
+                userRating.current.children[i].classList.remove("active")
+            }
+            if (event.target.id == 1) return
+
+            for (let i = 0; i < parseInt(event.target.id); i++){
+                userRating.current.children[i].classList.add("active")
+            }
+        }
+
+        setRating(parseInt(event.target.id))
+    }
+
 
 
     return(
@@ -42,15 +63,14 @@ export default function CreateReview(props: ReviewProps){
         <input type="hidden" name="userId" value={user.user?.id}></input>
         <input type="hidden" name="bookId" value={bookId}></input>
         <br></br>
-        <select name="rating" onChange={(e) => setRating(parseInt(e.target.value))}>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-        <textarea className="w-2/5 p-2" name="comment" onChange={(e) => setReview(e.target.value)}></textarea>
-        <br></br>
+        <div className="flex gap-2 mb-4" ref={userRating}>
+            <i className="fa-star fa-regular fa-2xl" id ="1" onClick={handleRatingClick}></i>
+            <i className="fa-star fa-regular fa-2xl" id ="2" onClick={handleRatingClick}></i>
+            <i className="fa-star fa-regular fa-2xl" id ="3" onClick={handleRatingClick}></i>
+            <i className="fa-star fa-regular fa-2xl" id ="4" onClick={handleRatingClick}></i>
+            <i className="fa-star fa-regular fa-2xl" id ="5" onClick={handleRatingClick}></i>
+        </div>
+        <textarea className="w-2/5 p-2 mt-4" name="comment" onChange={(e) => setReview(e.target.value)}></textarea>
         <button type="submit">Submit Review</button>
       </form>
     )
