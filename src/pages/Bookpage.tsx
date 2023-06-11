@@ -114,12 +114,13 @@ export default function BookPage(){
           <>
             {book ?  
             <React.Fragment>
-                <div className="flex flex-wrap justify-between mt-16 sm:gap-2">
-                  <div className="basis-1/3">
-                  <img className="w-64 m-auto" src ="../src/assets/Samplebook.png"/>
+                <div className="flex justify-between mt-16 flex-wrap lg:flex-nowrap sm:gap-2">
+
+                  <div className="basis-1/3 mx-auto">
+                    <img className="w-64 m-auto" src ="../src/assets/Samplebook.png"/>
                   </div>
 
-                  <div className="bg-zinc-800 p-4 rounded-lg basis-2/3 xl:basis-1/3 h-min 2xl:-ml-16">
+                  <div className="bg-zinc-800 p-4 rounded-lg basis-3/3 lg:basis-2/3 xl:basis-1/3 h-min 2xl:-ml-16">
                     <h1 className="text-3xl">{book.title} - {book.releaseDate}</h1>
                     <p>By John Cena</p>
                     <p className="mt-6 w-full">{book.description}</p>
@@ -127,6 +128,7 @@ export default function BookPage(){
                     <button onClick={addToCart}>Add to cart</button>
                     <button onClick={addToWishlist}>Add to wishlist</button>
                   </div>
+
                   <div className="basis-1/3 overflow-auto h-96 hidden xl:block">
                     <h1 className="text-center">Similar Books</h1>
                     {similarBooks?.map((book) =>{
@@ -140,6 +142,7 @@ export default function BookPage(){
                     )
                   })}
                   </div>
+
                 </div>
                 <div className="flex flex-wrap gap-4 items-center mt-16" >
                   <h1 className="text-3xl">Rating</h1>
@@ -159,7 +162,7 @@ export default function BookPage(){
                   <CreateReview bookId = {book.id}/>
                 </div>
 
-                <h1 className="text-3xl mt-4">Reviews</h1>
+                <h1 className="text-3xl mb-16 mt-4">Reviews</h1>
                 {bookReviews?.reviews.map((review) =>{
                     return(
                       <div className="flex items-center space-x-4 mb-8 mt-8">
