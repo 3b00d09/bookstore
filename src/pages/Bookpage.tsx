@@ -6,13 +6,25 @@ import { useUser } from "@clerk/clerk-react";
 import "../index.css"
 import CreateReview from "../components/CreateReview";
 
+interface review{
+  username: string,
+  comment: string,
+  rating: number,
+  profileimageurl: string
+}
+
+interface ratingType{
+  averageRating: number,
+  reviews: review[]
+}
+
 
 
 export default function BookPage(){
     const { id } = useParams()
     const [book, setBook] = useState<BookData>()
     const [similarBooks, setSimilarBooks] = useState<BookData[]>()
-    const [bookReviews, setBookReviews] = useState(0)
+    const [bookReviews, setBookReviews] = useState<ratingType>()
     const user = useUser()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
@@ -83,7 +95,9 @@ export default function BookPage(){
 
     useEffect(() =>{
       if(starDiv.current){
-        const rating= bookReviews
+        const rating = bookReviews?.averageRating
+        console.log(rating)
+        if (!rating) return
         for (let i = 0; i<Math.floor(rating); i++){
           starDiv.current.children[i].classList.add("active", "fa-solid")
         }
@@ -100,12 +114,12 @@ export default function BookPage(){
           <>
             {book ?  
             <React.Fragment>
-                <div className="flex flex-wrap justify-between mt-16">
-                  <div className="grow w-1/12">
+                <div className="flex flex-wrap justify-between mt-16 sm:gap-2">
+                  <div className="basis-1/3">
                   <img className="w-64 m-auto" src ="../src/assets/Samplebook.png"/>
                   </div>
 
-                  <div className="bg-zinc-800 p-4 rounded-lg grow w-1/6 h-min 2xl:-ml-16">
+                  <div className="bg-zinc-800 p-4 rounded-lg basis-2/3 xl:basis-1/3 h-min 2xl:-ml-16">
                     <h1 className="text-3xl">{book.title} - {book.releaseDate}</h1>
                     <p>By John Cena</p>
                     <p className="mt-6 w-full">{book.description}</p>
@@ -113,7 +127,7 @@ export default function BookPage(){
                     <button onClick={addToCart}>Add to cart</button>
                     <button onClick={addToWishlist}>Add to wishlist</button>
                   </div>
-                  <div className="grow w-1/12 overflow-auto h-96 hidden xl:block">
+                  <div className="basis-1/3 overflow-auto h-96 hidden xl:block">
                     <h1 className="text-center">Similar Books</h1>
                     {similarBooks?.map((book) =>{
                     return(
@@ -127,7 +141,7 @@ export default function BookPage(){
                   })}
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-4  mt-16" >
+                <div className="flex flex-wrap gap-4 items-center mt-16" >
                   <h1 className="text-3xl">Rating</h1>
                   <p ref={starDiv}>
                     <i className="fa-star fa-regular fa-2xl"></i>
@@ -146,64 +160,31 @@ export default function BookPage(){
                 </div>
 
                 <h1 className="text-3xl mt-4">Reviews</h1>
-
-                <div className="flex items-center space-x-4 mb-8 mt-8">
-                  {/* Left section */}
-                  <div className="flex-shrink-0">
-                    <img className="w-12 h-12 rounded-full" src={user.user?.profileImageUrl} alt="User" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">Username</h3>
-                  </div>
-
-                  {/* Right section */}
-                  <div className="flex-grow">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-xl font-semibold">4/5</h4>
+                {bookReviews?.reviews.map((review) =>{
+                    return(
+                      <div className="flex items-center space-x-4 mb-8 mt-8">
+                      {/* Left section */}
+                      <div className="flex-shrink-0">
+                        <img className="w-12 h-12 rounded-full" src={review.profileimageurl} alt="User" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold">{}</h3>
+                      </div>
+    
+                      {/* Right section */}
+                      <div className="flex-grow">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xl font-semibold">{`${review.rating}/5`}</h4>
+                        </div>
+                        <p className="mt-2 text-gray-600">{review.comment}</p>
+                      </div>
                     </div>
-                    <p className="mt-2 text-gray-600">This book is nice, however, it is weird because there is rumbling? wtf? i thought rumbling was attack on titan? lol</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-4 mb-8">
-                  {/* Left section */}
-                  <div className="flex-shrink-0">
-                    <img className="w-12 h-12 rounded-full" src={user.user?.profileImageUrl} alt="User" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">Username</h3>
-                  </div>
-
-                  {/* Right section */}
-                  <div className="flex-grow">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-xl font-semibold">4/5</h4>
-                    </div>
-                    <p className="mt-2 text-gray-600">This book is nice, however, it is weird because there is rumbling? wtf? i thought rumbling was attack on titan? lol</p>
-                  </div>
-                </div>
+                    )
+                  })
+                }
               </React.Fragment>
             : 
             <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}
           </>
     )
 }
-
-
-// const reviews = {
-//   averageRating: 3,
-//   allReviews: [
-//     {
-//       user: "anon",
-//       comment: "ALOO"
-//     },
-//     {
-//       user: "anon",
-//       comment: "ALOO"
-//     },
-//     {
-//       user: "anon",
-//       comment: "ALOO"
-//     },
-//   ]
-// }
