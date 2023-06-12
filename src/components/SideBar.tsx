@@ -77,7 +77,7 @@ function SideBar({categoryFilter, setCategoryFilter, priceFilter, setPriceFilter
     
     
     return(
-        <div className="top-0 max-w-xs bg-zinc-900 p-8 h-screen sticky">
+        <div className="top-0 max-w-xs bg-zinc-900 p-8 h-screen sticky hidden md:block">
             <h2 className="text-2xl mb-1">Categories</h2>
             <ul>
                 {categories &&(

@@ -4,19 +4,28 @@ import Search from "./Search";
 
 function Header(){
     return(
-        <header className="flex justify-between items-center bg-zinc-800 flex-wrap p-4">
+        <header className="flex justify-between items-center bg-zinc-800 flex-wrap p-4 sticky">
             <Logo />
             <Search />
             <SignedIn>
-                <ul className ="list-none flex justify-center items-center flex-wrap gap-4 basis-1/4">
+                <ul className ="list-none justify-center items-center flex-wrap gap-4 basis-1/4 hidden md:flex">
                     <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
-                        <Link to="/">Home</Link>
+                        <Link to="/">
+                            <p className="hidden md:block">Home</p>
+                            <i className="fa-solid fa-house md:hidden"></i>
+                        </Link>
                     </li>
                     <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
-                        <Link to="/create">Post book</Link>
+                        <Link to="/create">
+                            <p className="hidden md:block">Post Book</p>
+                            <i className="fa-solid fa-house md:hidden"></i>
+                        </Link>
                     </li>
                     <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
-                            <Link to="/cart">Cart</Link>
+                            <Link to="/cart">
+                                <p className="hidden md:block">Cart</p>
+                                <i className="fa-solid fa-cart-shopping md:hidden"></i>
+                            </Link>
                     </li>
                     <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
                             <SignOutButton />
@@ -24,7 +33,7 @@ function Header(){
                 </ul>
             </SignedIn>
             <SignedOut>
-                <ul className ="list-none flex justify-center items-center flex-wrap gap-4">
+                <ul className ="list-none justify-center items-center gap-4 hidden md:flex">
                     <li className ="">
                         <SignInButton />
                     </li>
@@ -43,9 +52,9 @@ function Logo(){
     const user = useUser()
     return(
         <Link to="/profile">
-            <div className ="flex justify-center items-center gap-4 flex-wrap hover:bg-gray-700 hover:cursor-pointer p-2">
+            <div className ="flex justify-center items-center gap-4 flex-wrap hover:bg-gray-700 hover:cursor-pointer p-2 hidden md:block">
                 <UserButton />
-                {user.user?.username}
+                <p className="hidden md:block">{user.user?.username}</p>
             </div>
         </Link>
     )

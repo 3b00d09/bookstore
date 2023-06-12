@@ -21,8 +21,8 @@ function Search(){
         setSearchQuery(event.target.value);
       };
     return(
-        <div className="basis-2/4">
-            <div className="flex flex-wrap gap-4 justify-center w-full">
+        <div className="w-full md:basis-2/4">
+            <div className="flex gap-4 justify-center">
                 <input value={searchQuery} onChange={handleInputChange} className = "w-3/4 p-2 rounded" type="text" placeholder="Search..."></input>
                 <button onClick={queryBooks} className="">Search</button>
             </div>
