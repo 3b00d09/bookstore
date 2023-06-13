@@ -10,10 +10,18 @@ import {  QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import MobileNav from './components/MovileNav';
 
 
+
 function App() {
 
   const user = useUser();
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions:{
+      queries:{
+        // the amount of hair i lost because of this is actually unreal man 
+        refetchOnWindowFocus: false,
+      }
+    }
+  })
 
 
   useEffect(() =>{

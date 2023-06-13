@@ -52,7 +52,7 @@ function Logo(){
     const user = useUser()
     return(
         <Link to="/profile">
-            <div className ="flex justify-center items-center gap-4 flex-wrap hover:bg-gray-700 hover:cursor-pointer p-2 hidden md:block">
+            <div className ="flex justify-center items-center gap-4 flex-wrap hover:bg-gray-700 hover:cursor-pointer p-2 hidden md:flex">
                 <UserButton />
                 <p className="hidden md:block">{user.user?.username}</p>
             </div>

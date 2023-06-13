@@ -4,17 +4,15 @@ import "../index.css"
 
 type FilterType = {
     categoryFilter: string[];
-    priceFilter: number;
-    languageFilter: string;
   };
 
 
-function Home({categoryFilter, priceFilter, languageFilter}: FilterType){
+function Home({categoryFilter}: FilterType){
 
     
     return(
         <div>
-            <AllBooks categoryFilter={categoryFilter} languageFilter={languageFilter} priceFilter={priceFilter} />
+            <AllBooks categoryFilter={categoryFilter} />
         </div>
     )
 }

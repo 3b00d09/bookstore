@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import React from "react"
 import { useEffect, useState, useRef } from "react";
 import { BookData } from "../components/BookCard"
@@ -96,7 +96,6 @@ export default function BookPage(){
     useEffect(() =>{
       if(starDiv.current){
         const rating = bookReviews?.averageRating
-        console.log(rating)
         if (!rating) return
         for (let i = 0; i<Math.floor(rating); i++){
           starDiv.current.children[i].classList.add("active", "fa-solid")
@@ -133,12 +132,14 @@ export default function BookPage(){
                     <h1 className="text-center">Similar Books</h1>
                     {similarBooks?.map((book) =>{
                     return(
-                      <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                      <img src="../src/assets/Samplebook.png" className="w-20" />
-                      <div>
-                        <p>{book.title}</p>
+                      <Link key={book.id} to={`/book/${book.id}`}>
+                        <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
+                        <img src="../src/assets/Samplebook.png" className="w-20" />
+                        <div>
+                          <p>{book.title}</p>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                     )
                   })}
                   </div>
@@ -165,7 +166,7 @@ export default function BookPage(){
                 <h1 className="text-3xl mb-16 mt-4">Reviews</h1>
                 {bookReviews?.reviews.map((review) =>{
                     return(
-                      <div className="flex items-center space-x-4 mb-8 mt-8">
+                      <div key= {review.username} className="flex items-center space-x-4 mb-8 mt-8">
                       {/* Left section */}
                       <div className="flex-shrink-0">
                         <img className="w-12 h-12 rounded-full" src={review.profileimageurl} alt="User" />

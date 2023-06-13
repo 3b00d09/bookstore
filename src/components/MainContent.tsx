@@ -14,9 +14,6 @@ function MainContent(){
     const location = useLocation();
     
     const [categoryFilter, setCategoryFilter] = useState<string[]>([])
-    const [languageFilter, setLanguageFilter] = useState<string>("")
-    const [priceFilter, setPriceFilter] = useState<number>(0)
-
     return(
 
         
@@ -24,15 +21,11 @@ function MainContent(){
         {location.pathname === '/' &&
         <SideBar 
             categoryFilter={categoryFilter} 
-            languageFilter={languageFilter} 
-            priceFilter={priceFilter}
             setCategoryFilter = {setCategoryFilter} 
-            setLanguageFilter = {setLanguageFilter}
-            setPriceFilter = {setPriceFilter}
         />}
         <div className='w-full mx-7 px-4'>
           <Routes>
-            <Route path ="/" element={<Home categoryFilter={categoryFilter} languageFilter={languageFilter} priceFilter={priceFilter}/>} />
+            <Route path ="/" element={<Home categoryFilter={categoryFilter}/>} />
             <Route path ="/create" element={<PostBook />}/>
             <Route path='/privacy' element={<PrivacyPolicy />} />
             <Route path ="/cookies" element={<CookiePolicy />} />

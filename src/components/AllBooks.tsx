@@ -2,59 +2,75 @@ import Section from "./Section";
 import "../App.css"
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import PanelNav from "./PanelNav";
+import { useEffect } from "react";
 
 type FilterType = {
     categoryFilter: string[];
-    priceFilter: number;
-    languageFilter: string;
   };
 
-function AllBooks({categoryFilter, priceFilter,languageFilter}: FilterType){
+function AllBooks({categoryFilter}: FilterType){
 
-    const queryClient = useQueryClient()
+    //const featured = useQuery({queryKey:["featured"], queryFn: fetchFeaturedBooks})
+    const popular = useQuery({queryKey:["popularBooks"], queryFn: fetchPopularBooks})
+    const topSelling = useQuery({queryKey:["topSellingBooks"], queryFn: fetchTopSellingBooks})
+    const mostWishedFor = useQuery({queryKey:["mostWishedForBooks"], queryFn: fetchMostWishedForBooks})
+    const recommended = useQuery({queryKey:["recommendedBooks"], queryFn: fetchRecommendedBooks})
 
-    const query = useQuery({queryKey:["books", categoryFilter], queryFn: fetchAllBooks})
 
-    async function fetchAllBooks(){
-        
-        // my backend dev decided to return different types of json so here we are
+    async function fetchFeaturedBooks(){
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/featured")
+        const data = await response.json()
+        return data
+    }
 
-        if(categoryFilter.length === 0){
-            const response = await fetch(`https://bookstore-eight-xi.vercel.app/books`)
-            const res = await response.json()
-            return res
-        }
-        else{
-            const queryString = categoryFilter.join(",")
-            console.log(queryString)
-            const response = await fetch(`https://bookstore-eight-xi.vercel.app/categories/books/?names=${queryString}`)
-            const res = await response.json()
-            return res
-        }
+    async function fetchPopularBooks(){
+        console.log("Called popular")
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/popular")
+        const data = await response.json()
+        return data
+    }
+
+    async function fetchTopSellingBooks(){
+        console.log("Called selling")
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/sell")
+        const data = await response.json()
+        return data
+    }
+
+    async function fetchMostWishedForBooks(){
+        console.log("Called wished for")
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/topwished")
+        const data = await response.json()
+        return data
+    }
+
+    async function fetchRecommendedBooks(){
+        console.log("Called rec")
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/recommended")
+        const data = await response.json()
+        return data
     }
 
 
     return(
-    <>
         <div className="w-full">
-            {query?.data &&(
-            <PanelNav heading={"History"} books={query.data}/>
+            {/* <PanelNav heading={"Featured Books"} query={featured}/> */}
+            {popular &&(
+                <PanelNav heading={"Popular Books"} query={{data:popular.data, isError:popular.isError, isSuccess: popular.isSuccess, isLoading: popular.isFetching}}/>
+            )}
+            {recommended &&(
+                <PanelNav heading={"Recommended Books"} query={{data:recommended.data, isError:recommended.isError, isSuccess: recommended.isSuccess, isLoading: popular.isFetching}}/>
             )}
 
-            <h1 className="text-3xl py-4 bg-gray-800 rounded-lg mt-6 p-2">{categoryFilter.length === 0 ? "All Books" : `${categoryFilter[0]}`}</h1>
-                <div className="grid content-start items-stretch my-4">
-                {query?.data && (
-                    <Section books={query.data} />
-                )}
-                {query.isLoading  &&(
-                    <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
-                )}
-                {query.error &&(
-                    <h1 className="justify-self-center">Could not load data</h1>
-                )}
-                </div>
+            {topSelling &&(
+                <PanelNav heading={"Most Selling Books"} query={{data:topSelling.data, isError:topSelling.isError, isSuccess: topSelling.isSuccess, isLoading: topSelling.isFetching}}/>
+            )}
+
+            {mostWishedFor &&(
+                <PanelNav heading={"Most wished for"} query={{data:mostWishedFor.data, isError:mostWishedFor.isError, isSuccess: mostWishedFor.isSuccess, isLoading: mostWishedFor.isLoading}}/>
+            )}
+
         </div>
-    </>
     )
 }
 

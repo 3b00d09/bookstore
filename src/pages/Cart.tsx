@@ -37,6 +37,7 @@ export default function Cart (){
 
         const res = await response.json()
         console.log(res)
+        localStorage.setItem("cart", JSON.stringify([]))
     }
 
     return (

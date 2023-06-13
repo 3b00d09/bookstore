@@ -166,7 +166,7 @@ button:focus-visible {
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-image: url("./assets//HistoryBanner.jpg");
+  background-image: url("./assets/FeaturedBooks.jpeg");
   background-size: cover;
   opacity: 0.1;
 }

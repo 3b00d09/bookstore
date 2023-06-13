@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import {useRef, useState, useEffect} from "react"
+import {useRef, useState} from "react"
 import { FormEvent } from 'react';
 
 
