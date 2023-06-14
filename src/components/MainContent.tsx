@@ -4,7 +4,7 @@ import BookPage from "../pages/Bookpage";
 import SideBar from "./SideBar";
 import Cart from '../pages/Cart';
 import Profile from '../pages/Profile';
-import { OrderHistory, ProfileCart, Selling, SoldHistory, ProfileIndex, UserSettings, Wishlist } from '../pages/userRoutes';
+import { OrderHistory, ProfileCart, SoldHistory, ProfileIndex, UserSettings, Wishlist } from '../pages/userRoutes';
 import {Route, Routes, useLocation} from "react-router-dom"
 import PostBook from '../components/PostBook/PostBook';
 import Home from '../pages/Home';
@@ -17,7 +17,7 @@ function MainContent(){
     return(
 
         
-        <div className='main-content flex-1 flex'>
+        <div className='main-content relative flex-1 flex'>
         {location.pathname === '/' &&
         <SideBar 
             categoryFilter={categoryFilter} 
@@ -35,7 +35,6 @@ function MainContent(){
               <Route path="" element={<ProfileIndex />} />
               <Route path ="purchased" element={<OrderHistory />} />
               <Route path ="sold" element={<SoldHistory />} />
-              <Route path="selling" element={<Selling />} />
               <Route path ="wishlist" element={<Wishlist />} />
               <Route path ="cart" element={<ProfileCart />} />
               <Route path ="settings" element={<UserSettings />} /> 

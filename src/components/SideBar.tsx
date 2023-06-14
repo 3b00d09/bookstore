@@ -42,20 +42,23 @@ function SideBar({categoryFilter, setCategoryFilter}: FilterType){
     
     
     return(
-        <div className="top-0 max-w-xs bg-zinc-900 p-8 h-screen sticky hidden md:block">
+        <div id="sidebar" className="max-w-xs bg-zinc-900 p-8 h-screen sticky hidden md:block md:top-0">
+            <div>
             <h2 className="text-2xl mb-1">Categories</h2>
-            <ul>
-                {categories &&(
-                    categories.map((category) =>{
-                        return (
-                        <div key={category.id} id="category-select" className="flex gap-1 justify-center align-center w-max">
-                            <input type="checkbox" value={category.name} onChange={handleCategoryCheckbox}></input>
-                            <li>{category.name}</li>
-                        </div>
-                        )
-                    })
-                )}
-            </ul>
+                <ul>
+                    {categories &&(
+                        categories.map((category) =>{
+                            return (
+                            <div key={category.id} id="category-select" className="flex gap-1 justify-center align-center w-max">
+                                <input type="checkbox" value={category.name} onChange={handleCategoryCheckbox}></input>
+                                <li>{category.name}</li>
+                            </div>
+                            )
+                        })
+                    )}
+                </ul>
+            </div>
+
 
         </div>
     )

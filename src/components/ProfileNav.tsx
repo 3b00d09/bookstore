@@ -13,11 +13,6 @@ function ProfileNav(){
             url:"/profile/sold"
         },
         {
-            heading:"Posted Items",
-            body:"Keep an eye on the books you have currently listed for sale.",
-            url:"/profile/selling"
-        },
-        {
             heading:"Wishlist",
             body:"Browse through your collection of books that you plan to purchase in the future.",
             url:"/profile/wishlist"
