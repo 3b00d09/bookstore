@@ -9,7 +9,7 @@ export interface BookData{
   price: number;
   description: string;
   category: Array<Int16Array>;
-  quantity: number;
+  stock: number;
   interactionsCount: number;
   releaseDate: string
 }
@@ -42,7 +42,7 @@ function Book(props: BookProps) {
 
     return (
       <div onClick={appendInteractions} className="flex flex-col items-stretch p-2">
-        <Link to={url}><img className ="w-44 bg-gray-900  border-8 border-yellow-800 rounded-lg" src ="src/assets/NoBookAvailable.png"/></Link>
+        <Link to={url}><img className ="w-44 bg-gray-900  border-8 border-gray-900 rounded-lg" src ="src/assets/NoBookAvailable.png"/></Link>
         <div className="w-44 p-2 bg-zinc-900 h-full flex flex-col justify-between ">
             <div className="py-1">{book.title}</div>
             <div>£{book.price}</div>

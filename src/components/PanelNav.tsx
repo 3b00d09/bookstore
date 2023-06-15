@@ -61,7 +61,7 @@ export default function PanelNav(props: HomeSectionProps){
 
     const handleHoverIn = (event: React.MouseEvent) =>{
         if(window.innerWidth < 1024) return
-        //startNavInterval()
+        startNavInterval()
         const parent = event.target as HTMLDivElement
         if(paragraphTag.current && imagesDiv.current){
             parent.classList.remove("flex")

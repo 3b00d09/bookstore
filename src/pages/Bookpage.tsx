@@ -25,26 +25,34 @@ export default function BookPage(){
     const [book, setBook] = useState<BookData>()
     const [similarBooks, setSimilarBooks] = useState<BookData[]>()
     const [bookReviews, setBookReviews] = useState<ratingType>()
+    const [inCart, setInCart] = useState(false)
+    const [cart, setCart] = useState<BookData[]>([])
     const user = useUser()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
+
+    
     
 
     const addToCart = () => {
-        // we tell typescript to parse localstorage as an array of objects with bookdata type (i think ???)
-        const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
+
         if (book) {
         // Append the book to the existing cart or create a new cart with only the book we are adding
-          book.quantity = 1;
-          const cartItem = {
-            id: book.id,
-            quantity: 1
-          }
-          const updatedCart = [...cart, cartItem]; 
+          const updatedCart = [...cart, book]; 
           localStorage.setItem("cart", JSON.stringify(updatedCart));
-          console.log("Book added to cart:", book);
+          setCart(updatedCart)
         }
       };
+
+      const removeFromCart = () =>{
+        if(book){
+          const updatedCart = cart.filter((item) => {return item.id !== book.id})
+          localStorage.setItem("cart", JSON.stringify(updatedCart))
+          setCart(updatedCart)
+        }
+      }
+
+
 
       const addToWishlist = async() =>{
         const data = {
@@ -63,7 +71,7 @@ export default function BookPage(){
       }
 
       useEffect(() =>{
-
+        
         const fetchBook = async () => {
             const response = await fetch(`https://bookstore-eight-xi.vercel.app/book/${id}`)
             const res = await response.json()
@@ -91,6 +99,9 @@ export default function BookPage(){
         fetchBook()
         fetchSimilarBooks()
         fetchReviews()
+
+        const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
+        setCart(cart)
     }, [])
 
     useEffect(() =>{
@@ -107,6 +118,12 @@ export default function BookPage(){
         }
     },[bookReviews])
 
+    useEffect(() =>{
+      setInCart(cart.some((item)=>{
+        return item.id === book?.id
+      }))
+    }, [book, cart])
+
       
 
     return (
@@ -122,10 +139,24 @@ export default function BookPage(){
                   <div className="bg-zinc-800 p-4 rounded-lg basis-3/3 lg:basis-2/3 xl:basis-1/3 h-min 2xl:-ml-16">
                     <h1 className="text-3xl">{book.title} - {book.releaseDate}</h1>
                     <p>By John Cena</p>
+                    <div className="">{`$${book.price}`}</div>
+                    <div>{`${book.stock} in stock`}</div>
                     <p className="mt-6 w-full">{book.description}</p>
-                    <div>{book.price}</div>
-                    <button onClick={addToCart}>Add to cart</button>
-                    <button onClick={addToWishlist}>Add to wishlist</button>
+                    <div className="flex flex-wrap gap-4 mt-4">
+                      {book.stock > 0?(
+                        <>
+                        {inCart?(
+                          <button onClick={removeFromCart}>Remove from cart</button>
+                        ):(
+                        <button onClick={addToCart}>Add to cart</button>
+                        )}
+                        </>
+                      ):(
+                        <></>
+                      )}
+                      <button onClick={addToWishlist}>Add to wishlist</button>
+                    </div>
+
                   </div>
 
                   <div className="basis-1/3 overflow-auto h-96 hidden xl:block">
@@ -134,11 +165,11 @@ export default function BookPage(){
                     return(
                       <Link key={book.id} to={`/book/${book.id}`}>
                         <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                        <img src="../src/assets/Samplebook.png" className="w-20" />
-                        <div>
-                          <p>{book.title}</p>
+                          <img src="../src/assets/Samplebook.png" className="w-20"/>
+                          <div>
+                            <p>{book.title}</p>
+                          </div>
                         </div>
-                      </div>
                     </Link>
                     )
                   })}
