@@ -42,7 +42,7 @@ function SideBar({categoryFilter, setCategoryFilter}: FilterType){
     
     
     return(
-        <div id="sidebar" className="max-w-xs bg-zinc-900 p-8 h-screen sticky hidden md:block md:top-0">
+        <div id="sidebar" className="max-w-xs bg-zinc-900 p-8 h-screen sticky hidden lg:block md:top-0">
             <div>
             <h2 className="text-2xl mb-1">Categories</h2>
                 <ul>

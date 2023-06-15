@@ -56,14 +56,14 @@ function AllBooks({categoryFilter}: FilterType){
         <div className="w-full">
             {/* <PanelNav heading={"Featured Books"} query={featured}/> */}
             {popular &&(
-                <PanelNav heading={"Popular Books"} query={{data:popular.data, isError:popular.isError, isSuccess: popular.isSuccess, isLoading: popular.isFetching}}/>
+                <PanelNav heading={"Popular"} query={{data:popular.data, isError:popular.isError, isSuccess: popular.isSuccess, isLoading: popular.isFetching}}/>
             )}
             {recommended &&(
-                <PanelNav heading={"Recommended Books"} query={{data:recommended.data, isError:recommended.isError, isSuccess: recommended.isSuccess, isLoading: popular.isFetching}}/>
+                <PanelNav heading={"Recommended"} query={{data:recommended.data, isError:recommended.isError, isSuccess: recommended.isSuccess, isLoading: popular.isFetching}}/>
             )}
 
             {topSelling &&(
-                <PanelNav heading={"Most Selling Books"} query={{data:topSelling.data, isError:topSelling.isError, isSuccess: topSelling.isSuccess, isLoading: topSelling.isFetching}}/>
+                <PanelNav heading={"Top Selling"} query={{data:topSelling.data, isError:topSelling.isError, isSuccess: topSelling.isSuccess, isLoading: topSelling.isFetching}}/>
             )}
 
             {mostWishedFor &&(

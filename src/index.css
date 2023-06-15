@@ -202,3 +202,9 @@ button:focus-visible {
     align-self: center;
   }
 }
+
+
+.panel-img{
+  max-width: none;
+}
+

@@ -15,6 +15,7 @@ interface HomeSectionProps{
     heading: String,
     query: queryType
 }
+
 export default function PanelNav(props: HomeSectionProps){
 
     const [currIndex, setCurrIndex] = useState(0)
@@ -24,12 +25,20 @@ export default function PanelNav(props: HomeSectionProps){
 
 
     useEffect(() => {
+        let booksPerSlide;
+        const screenSize: number = window.innerWidth
+        
+        // idk how to index an object with typescript problem for another day
+        screenSize >= 1536 ? booksPerSlide = 5 : screenSize >= 700 ? booksPerSlide = 4 : screenSize >= 500 ? booksPerSlide = 3
+        : booksPerSlide = 2
+
+        
         if (props.query.data) {
           const totalSlices = Math.floor(props.query.data.length / 5);
           const tempArray = [...props.query.data];
           let temp = [];
           for (let i = 0; i < totalSlices; i++) {
-            const removedElements = tempArray.splice(0, 5);
+            const removedElements = tempArray.splice(0, booksPerSlide);
             temp.push(removedElements);
           }
           setBookPages(temp);
@@ -51,28 +60,28 @@ export default function PanelNav(props: HomeSectionProps){
     const imagesDiv = useRef<HTMLDivElement>(null)
 
     const handleHoverIn = (event: React.MouseEvent) =>{
-        startNavInterval()
+        if(window.innerWidth < 1024) return
+        //startNavInterval()
         const parent = event.target as HTMLDivElement
         if(paragraphTag.current && imagesDiv.current){
             parent.classList.remove("flex")
             paragraphTag.current.classList.remove("animate-down")
             paragraphTag.current.classList.add("animate-up")
             imagesDiv.current.classList.add("flex")
-            imagesDiv.current.classList.remove("hidden")
+            imagesDiv.current.classList.remove("lg:hidden")
         }
     }
 
     const handleHoverOut = (event: React.MouseEvent) =>{
-    
+        if(window.innerWidth < 1024) return
         clearInterval(intervalRef.current);
-
         const parent = event.target as HTMLDivElement
         if(paragraphTag.current && imagesDiv.current){
             parent.classList.add("flex")
             paragraphTag.current.classList.remove("animate-up")
             paragraphTag.current.classList.add("animate-down")
             imagesDiv.current.classList.remove("flex")
-            imagesDiv.current.classList.add("hidden")
+            imagesDiv.current.classList.add("lg:hidden")
         }
     }
 
@@ -89,36 +98,43 @@ export default function PanelNav(props: HomeSectionProps){
 
     
     return(
-        <div className="flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
+        <div className="lg:flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42 hover:block" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
 
             {props.query.isSuccess &&(
                 <React.Fragment>
-                    <h1 className="text-3xl" ref={paragraphTag}>{props.heading}</h1>
-                    <div className="flex p-2 mt-6 justify-center gap-16 hidden" ref={imagesDiv}>
+                    <h1 className="text-3xl self-center" ref={paragraphTag}>{props.heading}</h1>
+                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden" ref={imagesDiv}>
 
                         {/* NEED Z INDEX BECAUSE WE HAVE ::BEFORE HERE AND SO IT COVERS THE P TAG AND DOESNT MAKE IT CLICKABLE */}
-                        <p className="self-center z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
+                        <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
                         {bookPages.length > 0 &&(
                             bookPages[currIndex].map((book) =>{
                                 return(
                                     <div key={book.id} className="relative group rounded-lg hover:bg-black cursor-pointer">
-                                        <img src="../src/assets/TestCover.jpg" className="h-10 sm:20 md:h-16 lg:h-24 xl:h-32 2xl:h-44 rounded-lg group-hover:opacity-30"></img>
+                                        <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg group-hover:opacity-30 panel-img"></img>
                                         <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
                                     </div>
                                 )
                             })
                         )}
-                        <p className="self-center z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
-
+                        <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
                     </div>
+
+                    <div className="flex lg:hidden justify-around mt-4">
+                        <p className="z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
+                        <p className="z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
+                    </div>
+
                 </React.Fragment>
+
+                
             )}
 
             {props.query.isError &&(
                 <h1>Could not load data</h1>
             )}
 
-            {props.query.isLoading && (
+            {props.query.isLoading &&(
                 <h1>Loading...</h1>
             )}
 
