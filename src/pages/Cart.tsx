@@ -43,13 +43,24 @@ export default function Cart (){
     return (
         <React.Fragment>
             <h1 className="text-3xl p-4">Cart</h1>
+
+            {user.isSignedIn &&(
+            <>            
             <div className="grid content-start items-stretch my-4">
-                {cartItems ? 
-                <Section books={cartItems}/>
-                : 
-                <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}
+            {cartItems ? 
+            <Section books={cartItems}/>
+            : 
+            <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}
             </div>
-            <button onClick={processPurchase}>SENDED CART</button>
+            {cartItems.length > 0?(
+                <button onClick={processPurchase}>SENDED CART</button>
+            ):(
+                <div>Cart is empty.</div>
+            )}
+
+            </>
+            )}
+
         </React.Fragment>
     )
 }

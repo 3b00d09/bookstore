@@ -27,6 +27,8 @@ export default function BookPage(){
     const [bookReviews, setBookReviews] = useState<ratingType>()
     const [inCart, setInCart] = useState(false)
     const [cart, setCart] = useState<BookData[]>([])
+    const [inWishlist, setInWishlist] = useState(false)
+    const [wishlist, setWishlist] = useState<BookData[]>([])
     const user = useUser()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
@@ -68,6 +70,10 @@ export default function BookPage(){
         })
         const res = await response.json()
         console.log(res)
+      }
+
+      const removeFromWishlist = async() =>{
+        return
       }
 
       useEffect(() =>{
@@ -143,18 +149,24 @@ export default function BookPage(){
                     <div>{`${book.stock} in stock`}</div>
                     <p className="mt-6 w-full">{book.description}</p>
                     <div className="flex flex-wrap gap-4 mt-4">
-                      {book.stock > 0?(
+                      {user.isSignedIn &&(
                         <>
-                        {inCart?(
-                          <button onClick={removeFromCart}>Remove from cart</button>
+                        {book.stock > 0?(
+                          <>
+                          {inCart?(
+                            <button onClick={removeFromCart}>Remove from cart</button>
+                          ):(
+                          <button onClick={addToCart}>Add to cart</button>
+                          )}
+                          <button onClick={addToWishlist}>Add to wishlist</button>
+                          </>
                         ):(
-                        <button onClick={addToCart}>Add to cart</button>
+                          <></>
                         )}
                         </>
-                      ):(
-                        <></>
                       )}
-                      <button onClick={addToWishlist}>Add to wishlist</button>
+
+
                     </div>
 
                   </div>
@@ -187,12 +199,14 @@ export default function BookPage(){
                   </p>
                 </div>
 
-
-                <div>
+                {user.isSignedIn &&(
+                  <div>
                   <p className="mt-6 opacity-80">Write a review...</p>
 
                   <CreateReview bookId = {book.id}/>
                 </div>
+                )}
+
 
                 <h1 className="text-3xl mb-16 mt-4">Reviews</h1>
                 {bookReviews?.reviews.map((review) =>{
