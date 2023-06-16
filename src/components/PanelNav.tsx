@@ -59,30 +59,15 @@ export default function PanelNav(props: HomeSectionProps){
     const paragraphTag = useRef<HTMLParagraphElement>(null)
     const imagesDiv = useRef<HTMLDivElement>(null)
 
-    const handleHoverIn = (event: React.MouseEvent) =>{
+    const handleHoverIn = () =>{
         if(window.innerWidth < 1024) return
         startNavInterval()
-        const parent = event.target as HTMLDivElement
-        if(paragraphTag.current && imagesDiv.current){
-            parent.classList.remove("flex")
-            paragraphTag.current.classList.remove("animate-down")
-            paragraphTag.current.classList.add("animate-up")
-            imagesDiv.current.classList.add("flex")
-            imagesDiv.current.classList.remove("lg:hidden")
-        }
     }
 
-    const handleHoverOut = (event: React.MouseEvent) =>{
+    const handleHoverOut = () =>{
         if(window.innerWidth < 1024) return
         clearInterval(intervalRef.current);
-        const parent = event.target as HTMLDivElement
-        if(paragraphTag.current && imagesDiv.current){
-            parent.classList.add("flex")
-            paragraphTag.current.classList.remove("animate-up")
-            paragraphTag.current.classList.add("animate-down")
-            imagesDiv.current.classList.remove("flex")
-            imagesDiv.current.classList.add("lg:hidden")
-        }
+        
     }
 
     const handlePrevNav = () =>{
@@ -98,20 +83,20 @@ export default function PanelNav(props: HomeSectionProps){
 
     
     return(
-        <div className="lg:flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42 hover:block" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
+        <div className="lg:flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42 group hover:block" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
 
             {props.query.isSuccess &&(
                 <React.Fragment>
-                    <h1 className="text-3xl self-center" ref={paragraphTag}>{props.heading}</h1>
-                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden" ref={imagesDiv}>
+                    <h1 className="text-3xl self-center hover:animate-up" ref={paragraphTag}>{props.heading}</h1>
+                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden group-hover:flex " ref={imagesDiv}>
 
                         {/* NEED Z INDEX BECAUSE WE HAVE ::BEFORE HERE AND SO IT COVERS THE P TAG AND DOESNT MAKE IT CLICKABLE */}
                         <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
                         {bookPages.length > 0 &&(
                             bookPages[currIndex].map((book) =>{
                                 return(
-                                    <div key={book.id} className="relative group rounded-lg hover:bg-black cursor-pointer">
-                                        <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg group-hover:opacity-30 panel-img"></img>
+                                    <div key={book.id} className="relative rounded-lg hover:bg-black group/images cursor-pointer">
+                                        <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
                                         <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
                                     </div>
                                 )

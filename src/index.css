@@ -181,9 +181,6 @@ button:focus-visible {
   animation: centerToTop 0.2s forwards;
 }
 
-.animate-down{
-  animation: topToCenter 0.2s forwards;
-}
 
 @keyframes centerToTop {
   from {
@@ -191,15 +188,6 @@ button:focus-visible {
   }
   to {
     align-self: start;
-  }
-}
-
-@keyframes topToCenter {
-  from {
-    align-self: start;
-  }
-  to {
-    align-self: center;
   }
 }
 

@@ -4,7 +4,9 @@ import { BookData } from "../components/BookCard"
 import Section from "../components/Section";
 import { useUser } from "@clerk/clerk-react";
 
-
+interface cartItemsId{
+    id: Number
+}
 
 export default function Cart (){
 
@@ -22,10 +24,21 @@ export default function Cart (){
     }, [])
 
     const processPurchase = async () =>{
+        let temp:cartItemsId[] = [] 
+        cartItems.forEach((item :cartItemsId) =>{
+            const book = {
+                "id": item.id,
+                "quantity": 1
+            }
+            temp.push(book)
+        })
+
         const cart = {
             userId: user.user?.id,
-            cart: cartItems
+            cart: temp
         }
+
+        console.log(cart)
         
         const response = await fetch("https://bookstore-eight-xi.vercel.app/book/buy", {
             method: "POST",
@@ -37,7 +50,7 @@ export default function Cart (){
 
         const res = await response.json()
         console.log(res)
-        localStorage.setItem("cart", JSON.stringify([]))
+        //localStorage.setItem("cart", JSON.stringify([]))
     }
 
     return (
@@ -64,4 +77,3 @@ export default function Cart (){
         </React.Fragment>
     )
 }
-
