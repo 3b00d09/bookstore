@@ -4,11 +4,12 @@ import BookPage from "../pages/Bookpage";
 import SideBar from "./SideBar";
 import Cart from '../pages/Cart';
 import Profile from '../pages/Profile';
-import { OrderHistory, ProfileCart, SoldHistory, ProfileIndex, UserSettings, Wishlist } from '../pages/userRoutes';
+import { OrderHistory, ProfileCart, ProfileIndex, Wishlist } from '../pages/userRoutes';
 import {Route, Routes, useLocation} from "react-router-dom"
 import PostBook from '../components/PostBook/PostBook';
 import Home from '../pages/Home';
 import { useState } from "react";
+import SearchResult from "../pages/SearchResult";
 
 function MainContent(){
     const location = useLocation();
@@ -18,11 +19,12 @@ function MainContent(){
 
         
         <div className='main-content relative flex-1 flex'>
-        {location.pathname === '/' &&
-        <SideBar 
-            categoryFilter={categoryFilter} 
-            setCategoryFilter = {setCategoryFilter} 
-        />}
+        {(location.pathname === '/' || location.pathname.startsWith("/search") || location.pathname.startsWith("/categories")) &&
+            <SideBar 
+                categoryFilter={categoryFilter} 
+                setCategoryFilter={setCategoryFilter} 
+            />
+        }
         <div className='w-full mx-7 px-4'>
           <Routes>
             <Route path ="/" element={<Home categoryFilter={categoryFilter}/>} />
@@ -31,13 +33,12 @@ function MainContent(){
             <Route path ="/cookies" element={<CookiePolicy />} />
             <Route path="/book/:id" element={<BookPage />} />
             <Route path = "/cart" element={<Cart />} />
+            <Route path="/search/:query" element={<SearchResult />}/>
             <Route path="/profile" element={<Profile />}>
               <Route path="" element={<ProfileIndex />} />
               <Route path ="purchased" element={<OrderHistory />} />
-              <Route path ="sold" element={<SoldHistory />} />
               <Route path ="wishlist" element={<Wishlist />} />
               <Route path ="cart" element={<ProfileCart />} />
-              <Route path ="settings" element={<UserSettings />} /> 
             </Route>
           </Routes>
         </div>

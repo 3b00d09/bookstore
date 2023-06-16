@@ -102,9 +102,15 @@ export default function BookPage(){
           setBookReviews(res)
         }
 
+        const fetchWishlist = async() =>{
+          const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/${user.user?.id}`)
+          console.log(response)
+        }
+
         fetchBook()
         fetchSimilarBooks()
         fetchReviews()
+        fetchWishlist()
 
         const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
         setCart(cart)
