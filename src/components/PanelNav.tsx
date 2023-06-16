@@ -56,9 +56,6 @@ export default function PanelNav(props: HomeSectionProps){
         };
 
 
-    const paragraphTag = useRef<HTMLParagraphElement>(null)
-    const imagesDiv = useRef<HTMLDivElement>(null)
-
     const handleHoverIn = () =>{
         if(window.innerWidth < 1024) return
         startNavInterval()
@@ -80,15 +77,14 @@ export default function PanelNav(props: HomeSectionProps){
     }
 
 
-
     
     return(
         <div className="lg:flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42 group hover:block" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
 
             {props.query.isSuccess &&(
                 <React.Fragment>
-                    <h1 className="text-3xl self-center hover:animate-up" ref={paragraphTag}>{props.heading}</h1>
-                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden group-hover:flex " ref={imagesDiv}>
+                    <h1 className="text-3xl self-center hover:animate-up" >{props.heading}</h1>
+                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden group-hover:flex ">
 
                         {/* NEED Z INDEX BECAUSE WE HAVE ::BEFORE HERE AND SO IT COVERS THE P TAG AND DOESNT MAKE IT CLICKABLE */}
                         <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
