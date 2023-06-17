@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import "../index.css"
 
 interface CategoryData{
     id: number,
@@ -45,17 +46,20 @@ function SideBar({categoryFilter, setCategoryFilter}: FilterType){
         <div id="sidebar" className="max-w-xs bg-zinc-900 p-8 h-screen sticky hidden lg:block md:top-0">
             <div>
             <h2 className="text-2xl mb-1">Categories</h2>
-                <ul>
-                    {categories &&(
-                        categories.map((category) =>{
-                            return (
-                            <div key={category.id} id="category-select" className="flex gap-1 justify-center align-center w-max">
-                                <input type="checkbox" value={category.name} onChange={handleCategoryCheckbox}></input>
-                                <li>{category.name}</li>
-                            </div>
-                            )
-                        })
-                    )}
+
+                {/* dont know how to grid with tailwind without having minmax */}
+                <ul className="icon-grid mt-4">
+                    <i className="fa-solid fa-person-dots-from-line"></i><p>Self-help</p>
+                    <i className="fa-solid fa-rocket"></i><p>Sci-Fi</p>
+                    <i className="fa-solid fa-question"></i><p>Mystery</p>
+                    <i className="fa-solid fa-book-open"></i><p>Biography</p>
+                    <i className="fa-solid fa-heart-crack"></i><p>Romance</p>
+                    <i className="fa-solid fa-landmark"></i><p>History</p>
+                    <i className="fa-solid fa-children"></i><p>Children</p>
+                    <i className="fa-solid fa-briefcase"></i><p>Business</p>
+                    <i className="fa-solid fa-khanda"></i><p>Fantasy</p>
+                    <i className="fa-solid fa-glasses"></i><p>Fiction</p>
+                    <i className="fa-solid fa-pencil"></i><p>Poetry</p>
                 </ul>
             </div>
 

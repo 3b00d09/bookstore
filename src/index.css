@@ -196,3 +196,8 @@ button:focus-visible {
   max-width: none;
 }
 
+.icon-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 0.8fr);
+  place-content: start;
+}

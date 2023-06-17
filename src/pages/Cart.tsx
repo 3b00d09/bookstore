@@ -2,7 +2,7 @@ import React from "react"
 import { useEffect, useState } from "react";
 import { BookData } from "../components/BookCard"
 import Section from "../components/Section";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 interface cartItemsId{
     id: Number
@@ -38,8 +38,6 @@ export default function Cart (){
             cart: temp
         }
 
-        console.log(cart)
-        
         const response = await fetch("https://bookstore-eight-xi.vercel.app/book/buy", {
             method: "POST",
             headers: {
