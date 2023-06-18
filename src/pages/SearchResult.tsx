@@ -1,6 +1,7 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { BookData } from "../components/BookCard"
 import { useEffect, useState } from "react"
+import BookPage from "./Bookpage"
 
 
 export default function SearchResult(){
@@ -20,7 +21,10 @@ export default function SearchResult(){
         <div>
             {books.map((book) =>{
                 return(
-                    <div key={book.id}>{book.title}</div>
+                    <>
+                        <div key={book.id}>{book.title}</div>
+                        <Link to={"/book/4"} />
+                    </>
                 )
             })}
         </div>
