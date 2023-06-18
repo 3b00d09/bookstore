@@ -2,17 +2,13 @@
 import AllBooks from "../components/AllBooks";
 import "../index.css"
 
-type FilterType = {
-    categoryFilter: string[];
-  };
 
-
-function Home({categoryFilter}: FilterType){
+function Home(){
 
     
     return(
         <div>
-            <AllBooks categoryFilter={categoryFilter} />
+            <AllBooks/>
         </div>
     )
 }

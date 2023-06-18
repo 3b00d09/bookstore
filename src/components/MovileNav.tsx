@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom"
 import { useClerk, SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/clerk-react"
-import { useEffect } from "react"
-
 
 export default function MobileNav(){
 

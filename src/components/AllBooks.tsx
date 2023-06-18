@@ -1,14 +1,10 @@
-import Section from "./Section";
 import "../App.css"
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import PanelNav from "./PanelNav";
-import { useEffect } from "react";
 
-type FilterType = {
-    categoryFilter: string[];
-  };
 
-function AllBooks({categoryFilter}: FilterType){
+
+function AllBooks(){
 
     //const featured = useQuery({queryKey:["featured"], queryFn: fetchFeaturedBooks})
     const popular = useQuery({queryKey:["popularBooks"], queryFn: fetchPopularBooks})
@@ -17,11 +13,11 @@ function AllBooks({categoryFilter}: FilterType){
     const recommended = useQuery({queryKey:["recommendedBooks"], queryFn: fetchRecommendedBooks})
 
 
-    async function fetchFeaturedBooks(){
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/featured")
-        const data = await response.json()
-        return data
-    }
+    // async function fetchFeaturedBooks(){
+    //     const response = await fetch("https://bookstore-eight-xi.vercel.app/books/featured")
+    //     const data = await response.json()
+    //     return data
+    // }
 
     async function fetchPopularBooks(){
         console.log("Called popular")

@@ -8,31 +8,28 @@ import { OrderHistory, ProfileCart, ProfileIndex, Wishlist } from '../pages/user
 import {Route, Routes, useLocation} from "react-router-dom"
 import PostBook from '../components/PostBook/PostBook';
 import Home from '../pages/Home';
-import { useState } from "react";
 import SearchResult from "../pages/SearchResult";
+import CategoryResults from "../pages/CategoryResults";
 
 function MainContent(){
     const location = useLocation();
-    
-    const [categoryFilter, setCategoryFilter] = useState<string[]>([])
+  
     return(
 
         
         <div className='main-content relative flex-1 flex'>
         {(location.pathname === '/' || location.pathname.startsWith("/search") || location.pathname.startsWith("/categories")) &&
-            <SideBar 
-                categoryFilter={categoryFilter} 
-                setCategoryFilter={setCategoryFilter} 
-            />
+            <SideBar/>
         }
         <div className='w-full mx-7 px-4'>
           <Routes>
-            <Route path ="/" element={<Home categoryFilter={categoryFilter}/>} />
+            <Route path ="/" element={<Home />} />
             <Route path ="/create" element={<PostBook />}/>
             <Route path='/privacy' element={<PrivacyPolicy />} />
             <Route path ="/cookies" element={<CookiePolicy />} />
             <Route path="/book/:id" element={<BookPage />} />
             <Route path = "/cart" element={<Cart />} />
+            <Route path = "/categories/:query" element={<CategoryResults />}></Route>
             <Route path="/search/:query" element={<SearchResult />}/>
             <Route path="/profile" element={<Profile />}>
               <Route path="" element={<ProfileIndex />} />

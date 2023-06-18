@@ -205,7 +205,7 @@ export default function BookPage(){
                   </p>
                 </div>
 
-                {user.isSignedIn &&(
+                {(
                   <div>
                   <p className="mt-6 opacity-80">Write a review...</p>
 
@@ -221,6 +221,7 @@ export default function BookPage(){
                       {/* Left section */}
                       <div className="flex-shrink-0">
                         <img className="w-12 h-12 rounded-full" src={review.profileimageurl} alt="User" />
+                        <p>{user.user?.username}</p>
                       </div>
                       <div>
                         <h3 className="text-lg font-semibold">{}</h3>

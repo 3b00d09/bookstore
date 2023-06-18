@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 import {useRef, useState} from "react"
 import { FormEvent } from 'react';
 
@@ -11,6 +11,7 @@ export default function CreateReview(props: ReviewProps){
 
     const [review, setReview] = useState("")
     const [rating, setRating] = useState<Number>(0) 
+    const {getToken} =  useAuth()
 
 
     const userRating = useRef<HTMLDivElement>(null)
@@ -21,20 +22,23 @@ export default function CreateReview(props: ReviewProps){
         event.preventDefault();
         const newReview = {
             bookId: bookId,
-            userId: user.user?.id,
+            userId: "user_2R2OpgA8Qs5uiJNkZpXk0kRxWYF",
             comment: review,
             rating: rating
         }
 
-        console.log(newReview)
-
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/review/create",{
+        const myToken = await getToken()
+        
+        const response = await fetch("https://bookstore-git-main-diyararashid123.vercel.app/review/create",{
             method:"POST",
             body: JSON.stringify(newReview),
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${myToken}`
               },
         })
+
+
 
         const res = await response.json()
         console.log(res)
