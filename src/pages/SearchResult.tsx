@@ -23,7 +23,7 @@ export default function SearchResult(){
                 return(
                     <>
                         <div key={book.id}>{book.title}</div>
-                        <Link to={"/book/4"} />
+                        <Link to={"/book/4"}>CLICK HERE</Link>
                     </>
                 )
             })}
