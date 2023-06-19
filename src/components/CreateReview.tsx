@@ -34,6 +34,7 @@ export default function CreateReview(props: ReviewProps){
             body: JSON.stringify(newReview),
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${myToken}`
               },
         })
 
