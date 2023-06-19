@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import React from "react"
 import { useEffect, useState, useRef } from "react";
 import { BookData } from "../components/BookCard"
@@ -29,13 +29,11 @@ export default function BookPage(){
     const [cart, setCart] = useState<BookData[]>([])
     const [inWishlist, setInWishlist] = useState(false)
     const [wishlist, setWishlist] = useState<BookData[]>([])
+
     const user = useUser()
+    const redirect = useNavigate()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
-
-    
-    
-
     const addToCart = () => {
 
         if (book) {
@@ -181,14 +179,19 @@ export default function BookPage(){
                     <h1 className="text-center">Similar Books</h1>
                     {similarBooks?.map((book) =>{
                     return(
-                      <Link key={book.id} to={`/book/${book.id}`}>
-                        <div className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2">
-                          <img src="../src/assets/Samplebook.png" className="w-20"/>
-                          <div>
-                            <p>{book.title}</p>
-                          </div>
+
+                      <div key={book.id} className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2 hover:
+                      cursor-pointer" onClick={() =>{
+                        // there is no other graceful way of doing this that i know, router just wont let me redirect from book/x to book/y
+                        redirect(`../book/${book.id}`);
+                        redirect(0)
+                      }}>
+                        <img src="../src/assets/Samplebook.png" className="w-20"/>
+                        <div>
+                          <p>{book.title}</p>
                         </div>
-                    </Link>
+                      </div>
+
                     )
                   })}
                   </div>

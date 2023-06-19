@@ -2,6 +2,7 @@ import React from "react";
 import "../index.css"
 import { BookData } from "./BookCard";
 import {useState, useEffect, useRef}from "react"
+import { useNavigate } from "react-router-dom";
 
 
 interface queryType{
@@ -20,6 +21,7 @@ export default function PanelNav(props: HomeSectionProps){
 
     const [currIndex, setCurrIndex] = useState(0)
     const [bookPages, setBookPages] = useState<BookData[][]>([])
+    const redirect = useNavigate()
 
     const intervalRef = useRef<number>()
 
@@ -91,7 +93,9 @@ export default function PanelNav(props: HomeSectionProps){
                         {bookPages.length > 0 &&(
                             bookPages[currIndex].map((book) =>{
                                 return(
-                                    <div key={book.id} className="relative rounded-lg hover:bg-black group/images cursor-pointer">
+                                    <div key={book.id} className="relative rounded-lg hover:bg-black group/images cursor-pointer" onClick={() =>{
+                                    redirect(`/book/${book.id}`);
+                                    }}>
                                         <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
                                         <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
                                     </div>
