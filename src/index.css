@@ -191,10 +191,7 @@ button:focus-visible {
 
 .panel-img{
   max-width: none;
-}
-
-.panel-img:hover{
-  transform: scale(1.25);
+  transition: transform 0.2s ease-in-out;
 }
 
 .icon-grid{

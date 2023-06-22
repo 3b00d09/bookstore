@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 interface props{
     activeSidebar: boolean,
+    setsideBarActive: React.Dispatch<React.SetStateAction<boolean>>,
     activeCategories: String[],
     setActiveCategories: React.Dispatch<React.SetStateAction<String[]>>
 }
@@ -16,6 +17,7 @@ function SideBar(props:props ){
     const handleCategoryClick = (e:React.MouseEvent<HTMLElement>) =>{
         // if sidebar is disabled due to fetch state (categoryResults.tsx) then we dont do anything
         if(!props.activeSidebar){
+            console.log("off")
             return
         }
         const element = e.target as HTMLElement
@@ -31,7 +33,6 @@ function SideBar(props:props ){
             props.setActiveCategories([...props.activeCategories, categoryName])
         }
     }
-
 
     // whenever active categories change we check if it has any items in it we redirect with those items
     useEffect(() =>{

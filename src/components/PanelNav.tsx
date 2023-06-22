@@ -3,6 +3,7 @@ import "../index.css"
 import { BookData } from "./BookCard";
 import {useState, useEffect, useRef}from "react"
 import { useNavigate } from "react-router-dom";
+import {motion} from "framer-motion"
 
 
 interface queryType{
@@ -88,22 +89,32 @@ export default function PanelNav(props: HomeSectionProps){
             {props.query.isSuccess &&(
                 <React.Fragment>
                     <h1 className="text-3xl self-center hover:animate-up" >{props.heading}</h1>
-                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden group-hover:flex ">
+                    <div className="flex p-2 mt-6 justify-center gap-16 lg:hidden group-hover:flex">
 
                         {/* NEED Z INDEX BECAUSE WE HAVE ::BEFORE HERE AND SO IT COVERS THE P TAG AND DOESNT MAKE IT CLICKABLE */}
                         <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
-                        {bookPages.length > 0 &&(
-                            bookPages[currIndex].map((book) =>{
-                                return(
-                                    <div key={book.id} className="relative rounded-lg hover:bg-black group/images cursor-pointer" onClick={() =>{
-                                    redirect(`/book/${book.id}`);
-                                    }}>
-                                        <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img"></img>
-                                        <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
-                                    </div>
-                                )
-                            })
-                        )}
+
+                            {bookPages.length > 0 &&(
+                                bookPages[currIndex].map((book) =>{
+                                    return(
+                                        <motion.div
+                                        key={book.id}
+                                        whileHover={{scale: 1.2}}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                        className="relative rounded-lg hover:bg-opacity-40"
+                                        onClick={() => redirect(`/book/${book.id}`)}
+                                      >
+                                            <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img"></img>
+                                            <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
+                                        </motion.div>
+                                    )
+                                })
+                            )}
+
+
                         <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
                     </div>
 

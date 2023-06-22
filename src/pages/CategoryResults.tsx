@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { redirect, useNavigate, useParams } from "react-router-dom"
 import { BookData } from "../components/BookCard"
 import "../index.css"
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +11,8 @@ interface props{
 export default function CategoryResults(props: props){
 
     const query = useParams()
+    const redirect = useNavigate()
+
     const {isLoading, isError, data} = useQuery({queryKey:["categoryResults", query], queryFn: (async() =>{
         const response = await fetch(`https://bookstore-git-main-diyararashid123.vercel.app/categories/books/?names=${query.query}`)
         const res = await response.json()
@@ -27,6 +29,8 @@ export default function CategoryResults(props: props){
     useEffect(() =>{
         return(() =>{
             props.setActiveCategories([])
+            // for some reason if we abruptly exit this page then our sidebar goes off (just a simple f5 causes this to break so here we are)
+            props.setsideBarActive(true)
         })
     }, [])
     
@@ -45,20 +49,21 @@ export default function CategoryResults(props: props){
                 <div className="flex justify-center"><div className="border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div></div>
             ):<></>}
 
-            
-            {data?.map((book:BookData) =>{
-                    return(
-                        <div className="flex gap-4 border rounded-full border-red-900 p-4 mb-2 w-1/2" key={book.id}>
-                             <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
-                             <div>
-                                <p>{book.title}</p>
-                                <p>{book.price}</p>
-                                <p>{book.description}</p>
-                             </div>
-                        </div>
-                    )
-                })
-            }
+            <div className="grid md:grid-cols-2 gap-8">
+                {data?.map((book:BookData) =>{
+                        return(
+                            <div className="flex gap-4 p-4 mb-2 hover:cursor-pointer rounded-lg border border-red-900" key={book.id} onClick={() => {redirect(`/book/${book.id}`)}}>
+                                <img src="../src/assets/TestCover.jpg" className=" w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
+                                <div>
+                                    <p>{book.title}</p>
+                                    <p>{book.price}</p>
+                                    <p>{book.description}</p>
+                                </div>
+                            </div>
+                        )
+                    })
+                }            
+            </div>
         </div>
     )
 }

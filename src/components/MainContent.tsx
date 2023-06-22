@@ -22,7 +22,7 @@ function MainContent(){
         
         <div className='main-content relative flex-1 flex'>
         {(location.pathname === '/' || location.pathname.startsWith("/search") || location.pathname.startsWith("/categories")) &&
-            <SideBar activeSidebar={activeSidebar} activeCategories={activeCategories} setActiveCategories={setActiveCategories}/>
+            <SideBar activeSidebar={activeSidebar} setsideBarActive={setsideBarActive} activeCategories={activeCategories} setActiveCategories={setActiveCategories}/>
         }
         <div className='w-full mx-7 px-4'>
           <Routes>
