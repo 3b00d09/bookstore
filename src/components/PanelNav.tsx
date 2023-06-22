@@ -49,6 +49,8 @@ export default function PanelNav(props: HomeSectionProps){
 
 
     const startNavInterval = () => {
+        // clear before we start any interval cause sometimes when hovering across images in a panel we get stacking intervals going from img to img
+        clearInterval(intervalRef.current);
         intervalRef.current = setInterval(() => {
             // we pass in the previous index to the next call because otherwise we are stuck with the initial value of currIndex when the timeout was first called
             setCurrIndex((prevIndex) =>
@@ -81,7 +83,7 @@ export default function PanelNav(props: HomeSectionProps){
 
     
     return(
-        <div className="lg:flex text-3xl py-4 rounded-lg mt-6 p-2 history-banner text-center h-42 group hover:block" onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
+        <div className={`lg:flex text-3xl py-4 rounded-lg mt-6 p-2 panel-nav text-center h-42 group hover:block ${props.heading.replaceAll(" ", "-")}`} onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
 
             {props.query.isSuccess &&(
                 <React.Fragment>
@@ -96,7 +98,7 @@ export default function PanelNav(props: HomeSectionProps){
                                     <div key={book.id} className="relative rounded-lg hover:bg-black group/images cursor-pointer" onClick={() =>{
                                     redirect(`/book/${book.id}`);
                                     }}>
-                                        <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
+                                        <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img"></img>
                                         <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
                                     </div>
                                 )

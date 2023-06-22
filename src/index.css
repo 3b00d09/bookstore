@@ -119,28 +119,7 @@ button:focus-visible {
   color: yellow;
 }
 
-/** https://coder-coder.com/background-image-opacity/ **/
-.banner{
-  position: relative;
-}
 
-.banner::before{
-  content: "";
-  background-image: url("./assets/bookShelve.jpeg");
-  background-size: cover;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  opacity: 0.4;
-}
-
-
-.banner img {
-  position: relative;
-  box-shadow: 2px 2px 4px rgba(230, 219, 219, 0.87);
-}
 
 .banner h1{
   position: relative;
@@ -148,30 +127,48 @@ button:focus-visible {
 }
 
 
-.history-banner{
+.panel-nav{
   position: relative;
   justify-content: center;
   height: 300px;
 }
 
-.history-banner img {
+/** https://coder-coder.com/background-image-opacity/ **/
+
+.panel-img {
   position: relative;
   box-shadow: 2px 2px 4px rgba(230, 219, 219, 0.87);
 }
 
-.history-banner::before{
+.panel-nav::before{
   content: "";
   position: absolute;
   top: 0px;
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-image: url("./assets/FeaturedBooks.jpeg");
   background-size: cover;
+  background-position: center;
   opacity: 0.1;
 }
 
-.history-banner h1{
+.Popular::before{
+  background-image: url("./assets/LibraryWhite.jpg");
+}
+
+.Recommended::before{
+  background-image: url("./assets/HistoryBanner.jpg");
+}
+
+.Top-Selling::before{
+  background-image: url("./assets/bookShelve.jpeg");
+}
+
+.Most-wished-for::before{
+  background-image: url("./assets/FeaturedBooks.jpeg");
+}
+
+.panel-nav h1{
   align-self: center;
   font-family: cursive;
   font-size: 3rem;
@@ -194,6 +191,10 @@ button:focus-visible {
 
 .panel-img{
   max-width: none;
+}
+
+.panel-img:hover{
+  transform: scale(1.25);
 }
 
 .icon-grid{

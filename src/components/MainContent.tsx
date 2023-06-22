@@ -10,16 +10,19 @@ import PostBook from '../components/PostBook/PostBook';
 import Home from '../pages/Home';
 import SearchResult from "../pages/SearchResult";
 import CategoryResults from "../pages/CategoryResults";
+import { useState } from "react";
 
 function MainContent(){
     const location = useLocation();
+    const [activeSidebar, setsideBarActive] = useState(true)
+    const [activeCategories, setActiveCategories] = useState<String[]>([])
   
     return(
 
         
         <div className='main-content relative flex-1 flex'>
         {(location.pathname === '/' || location.pathname.startsWith("/search") || location.pathname.startsWith("/categories")) &&
-            <SideBar/>
+            <SideBar activeSidebar={activeSidebar} activeCategories={activeCategories} setActiveCategories={setActiveCategories}/>
         }
         <div className='w-full mx-7 px-4'>
           <Routes>
@@ -29,7 +32,7 @@ function MainContent(){
             <Route path ="/cookies" element={<CookiePolicy />} />
             <Route path="/book/:id" element={<BookPage />} />
             <Route path = "/cart" element={<Cart />} />
-            <Route path = "/categories/:query" element={<CategoryResults />}></Route>
+            <Route path = "/categories/:query" element={<CategoryResults setsideBarActive={setsideBarActive} setActiveCategories={setActiveCategories} />}></Route>
             <Route path="/search/:query" element={<SearchResult />}/>
             <Route path="/profile" element={<Profile />}>
               <Route path="" element={<ProfileIndex />} />
