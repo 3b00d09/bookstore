@@ -3,7 +3,7 @@ import "../index.css"
 import { BookData } from "./BookCard";
 import {useState, useEffect, useRef}from "react"
 import { useNavigate } from "react-router-dom";
-import {motion} from "framer-motion"
+import {motion, AnimatePresence} from "framer-motion"
 
 
 interface queryType{
@@ -84,6 +84,12 @@ export default function PanelNav(props: HomeSectionProps){
 
     
     return(
+        <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
         <div className={`lg:flex text-3xl py-4 rounded-lg mt-6 p-2 panel-nav text-center h-42 group hover:block ${props.heading.replaceAll(" ", "-")}`} onMouseEnter={handleHoverIn} onMouseLeave={handleHoverOut}>
 
             {props.query.isSuccess &&(
@@ -97,19 +103,26 @@ export default function PanelNav(props: HomeSectionProps){
                             {bookPages.length > 0 &&(
                                 bookPages[currIndex].map((book) =>{
                                     return(
-                                        <motion.div
-                                        key={book.id}
-                                        whileHover={{scale: 1.2}}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -20 }}
-                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                                        className="relative rounded-lg hover:bg-opacity-40"
-                                        onClick={() => redirect(`/book/${book.id}`)}
-                                      >
-                                            <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img"></img>
-                                            <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
-                                        </motion.div>
+                                        // AnimatePresence with those two props tells our DOM to wait until current element leave the DOM before animating new one in
+                                        <AnimatePresence
+                                        initial={false}
+                                        mode="wait"
+                                        >
+                                            {/* the div with all the animation magic happening https://www.framer.com/motion/component/ */}
+                                            <motion.div
+                                            key={book.id}
+                                            whileHover={{scale: 1.2}}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                            className="relative rounded-lg hover:bg-opacity-40"
+                                            onClick={() => redirect(`/book/${book.id}`)}
+                                            >
+                                                <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img"></img>
+                                                <p className="absolute bottom-0 mb-2 w-full text-base break-words font-sans font-serif">{book.title}</p>
+                                            </motion.div>
+                                        </AnimatePresence>
                                     )
                                 })
                             )}
@@ -132,10 +145,11 @@ export default function PanelNav(props: HomeSectionProps){
                 <h1>Could not load data</h1>
             )}
 
-            {props.query.isLoading &&(
+            {props.query.isLoading && !props.query.data &&(
                 <h1>Loading...</h1>
             )}
 
         </div>
+        </motion.div>
     )
 }
