@@ -11,7 +11,7 @@ export default function CreateReview(props: ReviewProps){
 
     const [review, setReview] = useState("")
     const [rating, setRating] = useState<Number>(0) 
-    const {getToken} =  useAuth()
+    const { getToken } =  useAuth()
 
 
     const userRating = useRef<HTMLDivElement>(null)
@@ -22,7 +22,7 @@ export default function CreateReview(props: ReviewProps){
         event.preventDefault();
         const newReview = {
             bookId: bookId,
-            userId: "user_2R2OpgA8Qs5uiJNkZpXk0kRxWYF",
+            userId: user.user?.id,
             comment: review,
             rating: rating
         }

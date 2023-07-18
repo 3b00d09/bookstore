@@ -33,7 +33,7 @@ export default function MobileNav(){
 
     }
     return(
-        <div className="bottom-0 w-screen sticky p-2 bg-zinc-800 md:hidden">
+        <div className="bottom-0 w-screen sticky p-2 bg-secondary-purple md:hidden z-50">
                 <ul className ="list-none justify-around items-center gap-4 basis-1/4 flex">
                     <SignedIn>
                         <li className ="py-1 px-2 hover:cursor-pointer">

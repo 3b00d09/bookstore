@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { redirect, useNavigate, useParams } from "react-router-dom"
 import { BookData } from "../components/BookCard"
 import "../index.css"
 import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from '@tanstack/react-query'
+import React from "react";
+import { useIntersection } from "@mantine/hooks";
 
 interface props{
     setsideBarActive: React.Dispatch<React.SetStateAction<boolean>>,
@@ -13,17 +16,36 @@ export default function CategoryResults(props: props){
     const query = useParams()
     const redirect = useNavigate()
 
-    const {isLoading, isError, data} = useQuery({queryKey:["categoryResults", query], queryFn: (async() =>{
-        const response = await fetch(`https://bookstore-git-main-diyararashid123.vercel.app/categories/books/?names=${query.query}`)
+    const fetchBooks = async({pageParam = 1})=>{
+        const response = await fetch(`https://bookstore-git-main-diyararashid123.vercel.app/categories/books/?names=${query.query}&page=${pageParam}`)
         const res = await response.json()
         return res
-        })
+    }
+
+    const {data, error, fetchNextPage, isFetching, isFetchingNextPage, isLoading} = useInfiniteQuery({
+        queryKey:["categoryResults", query], 
+        queryFn: (fetchBooks), 
+        getNextPageParam: (lastPage, allPages) => {
+            let nextPage = lastPage.currentPage + 1;
+            return nextPage <= lastPage.totalPages ? nextPage : undefined; 
+        },
     })
 
+    const lastPost = useRef<HTMLElement>(null)
+    const {ref, entry} = useIntersection({
+        root: lastPost.current,
+        threshold: 1
+    })
+
+    useEffect(()=>{
+        if(entry?.isIntersecting) fetchNextPage()
+    },[entry])
+
+    // disable sidebar while we are fetching data so user has to wait for data to be returned before clicking another catergory and calling more data
     useEffect(() =>{
-        isLoading === true ? props.setsideBarActive(false) : props.setsideBarActive(true)
+        props.setsideBarActive(!isFetching)
         
-    }, [isLoading])
+    }, [isFetching])
 
     // reset active categories when we dismount (just to clear the color of selected icons + the state of activeCategories)
     useEffect(() =>{
@@ -37,33 +59,55 @@ export default function CategoryResults(props: props){
 
     return(
         <div className="mt-8">
-            <h1 className="text-3xl mb-6">Query Results</h1>
-            <div className="flex flex-wrap gap-4">
-                {query.query?.split(",").map((query) =>{
-                    return(
-                        <div key={query} className="category-btn rounded-lg p-[4px]">{query}</div>
-                    )
-                })}
-            </div>
             {isLoading ? (
                 <div className="flex justify-center"><div className="border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div></div>
             ):<></>}
 
             <div className="grid md:grid-cols-2 gap-8">
-                {data?.map((book:BookData) =>{
+            {data?.pages.map((group, i) =>{
                         return(
-                            <div className="flex gap-4 p-4 mb-2 hover:cursor-pointer rounded-lg border border-red-900" key={book.id} onClick={() => {redirect(`/book/${book.id}`)}}>
-                                <img src="../src/assets/TestCover.jpg" className=" w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
-                                <div>
-                                    <p>{book.title}</p>
-                                    <p>{book.price}</p>
-                                    <p>{book.description}</p>
+                            <React.Fragment key={i}>
+                                {group.Books.map((book: BookData,i:number) =>{
+                                    if(i === group.Books.length - 1){
+                                        return(
+                                            <div key={book.id} ref={ref}>
+                                                <div className="flex gap-4 p-4 mb-2 hover:cursor-pointer rounded-lg border border-red-900" key={book.id} onClick={() => {redirect(`/book/${book.id}`)}}>
+                                                <img src="../src/assets/TestCover.jpg" className=" w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
+                                                <div className="text-xl">
+                                                    <p>{book.title}</p>
+                                                    <p>{book.price.toFixed(2)}</p>
+                                                    <p className="text-base word-break">{book.description}</p>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                return(
+                                <div key={book.id}>
+                                    <div className="flex gap-4 p-4 mb-2 hover:cursor-pointer rounded-lg border border-red-900" key={book.id} onClick={() => {redirect(`/book/${book.id}`)}}>
+                                    <img src="../src/assets/TestCover.jpg" className=" w-28 md:w-32 rounded-lg panel-img group-hover/images:opacity-30"></img>
+                                    <div className="text-xl">
+                                        <p>{book.title}</p>
+                                        <p>{book.price.toFixed(2)}</p>
+                                        <p className="text-base">{book.description}</p>
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
+                                )
+                                })}
+                            </React.Fragment>
                         )
                     })
                 }            
             </div>
+            {isFetchingNextPage?
+                <div className="my-6 place-content-center grid">
+                    <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
+                </div>
+                :
+               <></>
+            }
+            
         </div>
     )
 }

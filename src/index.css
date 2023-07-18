@@ -1,10 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  background-color: #EFEEE7;
+  color: #12120C;
 	/* background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
                 radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%); */
   
@@ -36,7 +40,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #D9D9D9;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -127,7 +131,7 @@ button:focus-visible {
 }
 
 
-.panel-nav{
+.panel-nav, .main-banner{
   position: relative;
   justify-content: center;
   height: 300px;
@@ -140,7 +144,7 @@ button:focus-visible {
   box-shadow: 2px 2px 4px rgba(230, 219, 219, 0.87);
 }
 
-.panel-nav::before{
+.panel-nav::before, .main-banner::before{
   content: "";
   position: absolute;
   top: 0px;
@@ -149,7 +153,12 @@ button:focus-visible {
   left: 0px;
   background-size: cover;
   background-position: center;
-  opacity: 0.1;
+  filter: blur(3px);
+  opacity: 0.5;
+}
+
+.main-banner::before{
+  background-image:url("./assets/MainBannerBg.jpg")
 }
 
 .Popular::before{
@@ -164,7 +173,7 @@ button:focus-visible {
   background-image: url("./assets/bookShelve.jpeg");
 }
 
-.Most-wished-for::before{
+.Most-Wished-For::before{
   background-image: url("./assets/FeaturedBooks.jpeg");
 }
 

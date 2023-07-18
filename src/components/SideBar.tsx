@@ -60,9 +60,9 @@ function SideBar(props:props ){
     },[props.activeCategories])
 
     return(
-        <div id="sidebar" className="max-w-xs bg-zinc-900 p-8 h-screen sticky hidden lg:block md:top-0">
-            <div>
-                <h2 className="text-2xl mb-1">Categories</h2>
+        <div id="sidebar" className="max-w-xs bg-secondary-purple p-6 hidden lg:block sticky top-0 left-0 h-screen">
+
+                <h2 className="text-2xl mb-1 font-semibold">Categories</h2>
 
                 {/* dont know how to grid with tailwind without having minmax */}
                 <ul className="icon-grid mt-4" ref={categorySelectParent}>
@@ -77,11 +77,14 @@ function SideBar(props:props ){
                     <i onClick={handleCategoryClick} id={"Fantasy"}className="category-select hover:cursor-pointer fa-solid fa-khanda"></i><p>Fantasy</p>
                     <i onClick={handleCategoryClick} id={"Fiction"}className="category-select hover:cursor-pointer fa-solid fa-glasses"></i><p>Fiction</p>
                     <i onClick={handleCategoryClick} id={"Poetry"}className="category-select hover:cursor-pointer fa-solid fa-pencil"></i><p>Poetry</p>
-
-
                 </ul>
+                <div className="fixed bottom-8">
+                    <p>Frontend by Annon</p>
+                    <p>Backend by Jexzz</p>
+                </div>
             </div>
-        </div>
+
+
             )}
 
 export default SideBar

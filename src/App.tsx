@@ -2,7 +2,7 @@
 import './App.css'
 import React from "react"
 import { useEffect } from "react";
-import {useUser} from "@clerk/clerk-react";
+import {useAuth, useUser} from "@clerk/clerk-react";
 import CookieNotice from './components/CookieNotice';
 import MainContent from './components/MainContent';
 import Header from './components/Header';
@@ -14,6 +14,8 @@ import MobileNav from './components/MovileNav';
 function App() {
 
   const user = useUser();
+  const {getToken} = useAuth()
+
   const queryClient = new QueryClient({
     defaultOptions:{
       queries:{
@@ -42,17 +44,19 @@ function App() {
 
   const sendInteractions = async (newInteractions:any) =>{
 
+
     // send new interactions here
     const interactions = {
       userId: user.user?.id,
       interactions: newInteractions
     }
 
-    console.log(interactions)
+    const myToken = await getToken()
     const response = await fetch("https://bookstore-eight-xi.vercel.app/interactions",{
       method: "POST",
       headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myToken}`
         },
       body: JSON.stringify(interactions)
     })

@@ -1,71 +1,64 @@
-import "../App.css"
+import "../index.css"
 import { useQuery } from "@tanstack/react-query";
 import PanelNav from "./PanelNav";
+import { motion } from "framer-motion";
 
 
 
 function AllBooks(){
 
-    //const featured = useQuery({queryKey:["featured"], queryFn: fetchFeaturedBooks})
     const popular = useQuery({queryKey:["popularBooks"], queryFn: fetchPopularBooks})
     const topSelling = useQuery({queryKey:["topSellingBooks"], queryFn: fetchTopSellingBooks})
     const mostWishedFor = useQuery({queryKey:["mostWishedForBooks"], queryFn: fetchMostWishedForBooks})
-    const recommended = useQuery({queryKey:["recommendedBooks"], queryFn: fetchRecommendedBooks})
+    //const recommended = useQuery({queryKey:["recommendedBooks"], queryFn: fetchRecommendedBooks})
 
-
-    // async function fetchFeaturedBooks(){
-    //     const response = await fetch("https://bookstore-eight-xi.vercel.app/books/featured")
-    //     const data = await response.json()
-    //     return data
-    // }
 
     async function fetchPopularBooks(){
-        console.log("Called popular")
         const response = await fetch("https://bookstore-eight-xi.vercel.app/books/popular")
         const data = await response.json()
         return data
     }
 
     async function fetchTopSellingBooks(){
-        console.log("Called selling")
         const response = await fetch("https://bookstore-eight-xi.vercel.app/books/sell")
         const data = await response.json()
         return data
     }
 
     async function fetchMostWishedForBooks(){
-        console.log("Called wished for")
         const response = await fetch("https://bookstore-eight-xi.vercel.app/books/topwished")
-        const data = await response.json()
-        return data
-    }
-
-    async function fetchRecommendedBooks(){
-        console.log("Called rec")
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/books/recommended")
         const data = await response.json()
         return data
     }
 
 
     return(
-        <div className="w-full">
+        <div className="w-full mb-8">
+            <div className="flex flex-col justify-center items-center main-banner">
+                <motion.div
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    className="z-10 text-center"
+                    >
+                <p className="text-6xl italic font-semibold">Find Your Next Literary Treasure</p>
+                <p className="text-3xl mt-2 font-semibold italic">Where Words Come Alive...</p>
+                </motion.div>
+            </div>
+            <h1 className="mt-6 text-4xl font-medium">Popular Titles</h1>
             {/* <PanelNav heading={"Featured Books"} query={featured}/> */}
             {popular &&(
-                <PanelNav heading={"Popular"} query={{data:popular.data, isError:popular.isError, isSuccess: popular.isSuccess, isLoading: popular.isFetching}}/>
+                <PanelNav key={"Popular"} heading={"Popular"} query={{data:popular.data, isError:popular.isError, isSuccess: popular.isSuccess, isLoading: popular.isFetching}}/>
             )}
-            {recommended &&(
-                <PanelNav heading={"Recommended"} query={{data:recommended.data, isError:recommended.isError, isSuccess: recommended.isSuccess, isLoading: popular.isFetching}}/>
-            )}
-
+            <h1 className="mt-6 text-4xl font-medium">Top Selling Titles</h1>
             {topSelling &&(
-                <PanelNav heading={"Top Selling"} query={{data:topSelling.data, isError:topSelling.isError, isSuccess: topSelling.isSuccess, isLoading: topSelling.isFetching}}/>
+                <PanelNav key={"Top Selling"} heading={"Top Selling"} query={{data:topSelling.data, isError:topSelling.isError, isSuccess: topSelling.isSuccess, isLoading: topSelling.isFetching}}/>
             )}
 
+            <h1 className="mt-6 text-4xl font-medium">Most Wished For</h1>
             {mostWishedFor &&(
-                <PanelNav heading={"Most wished for"} query={{data:mostWishedFor.data, isError:mostWishedFor.isError, isSuccess: mostWishedFor.isSuccess, isLoading: mostWishedFor.isLoading}}/>
+                <PanelNav key={"Most Wished For"} heading={"Most Wished For"} query={{data:mostWishedFor.data, isError:mostWishedFor.isError, isSuccess: mostWishedFor.isSuccess, isLoading: mostWishedFor.isLoading}}/>
             )}
-
         </div>
     )
 }

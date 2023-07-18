@@ -1,9 +1,8 @@
 import React from "react";
 import "../index.css"
-import BookCard, { BookData } from "./BookCard";
+import { BookData } from "./BookCard";
 import {useState, useEffect, useRef}from "react"
 import { useNavigate } from "react-router-dom";
-import {motion, AnimatePresence} from "framer-motion"
 
 interface queryType{
     data: {
@@ -19,7 +18,7 @@ interface HomeSectionProps{
     query: queryType
 }
 
-export default function PanelNav(props: HomeSectionProps){
+export default function ProfilePanelNav(props: HomeSectionProps){
 
     const [currIndex, setCurrIndex] = useState(0)
     const [bookPages, setBookPages] = useState<BookData[][]>([])
@@ -59,7 +58,7 @@ export default function PanelNav(props: HomeSectionProps){
             setCurrIndex((prevIndex) =>
             prevIndex === bookPages.length - 1 ? 0 : prevIndex + 1
             );
-        }, 1000 * 3);
+        }, 1000 * 2);
         };
 
 
@@ -72,18 +71,12 @@ export default function PanelNav(props: HomeSectionProps){
         currIndex === bookPages.length - 1 ? setCurrIndex(0) : setCurrIndex(currIndex + 1)
     }
 
-    useEffect(() =>{
-        if(bookPages.length > 0) startNavInterval()
-    },[bookPages])
+    // useEffect(() =>{
+    //     if(bookPages.length > 0) startNavInterval()
+    // },[bookPages])
 
     
     return(
-        <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
-        >
         <div className={`lg:flex text-3xl py-4 rounded-lg mt-6 p-2 panel-nav text-center h-42 ${props.heading.replaceAll(" ", "-")}`}>
 
             {props.query.isSuccess &&(
@@ -96,27 +89,17 @@ export default function PanelNav(props: HomeSectionProps){
 
                             {bookPages.length > 0 &&(
                                 // AnimatePresence with those two props tells our DOM to wait until current element leaves before animating new one in
-                                <AnimatePresence mode="wait">
-                                
+                                <>
                                 {bookPages[currIndex].map((book) =>{
                                     return(
-                                            /* the div with all the animation magic happening https://www.framer.com/motion/component/ */
-                                            <motion.div
-                                            key={book.id}
-                                            whileHover={{scale: 1.2}}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
-                                            transition={{ duration: 0.6, ease:"easeInOut"}}
-                                            className="relative rounded-lg hover:bg-opacity-40"
-                                            onClick={() => redirect(`/book/${book.id}`)}
-                                            >
-                                                <BookCard book={book}/>
-                                            </motion.div>
-                                        
+                                            /* the div with all the animation magic happening https://www.framer.com/motion/component/ */                                           
+                                            <div className="" onClick={() => redirect(`/book/${book.id}`)}>
+                                                <img src="../src/assets/TestCover.jpg" className="max-w-none w-28 md:w-32 rounded-lg panel-img"></img>
+                                                <p className="absolute mb-2 w-full text-base break-words font-serif">{book.title}</p>
+                                            </div>
                                     )
                                 })}
-                                </AnimatePresence>
+                                </>
                             )}
 
                         <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
@@ -141,6 +124,5 @@ export default function PanelNav(props: HomeSectionProps){
             )}
 
         </div>
-        </motion.div>
     )
 }

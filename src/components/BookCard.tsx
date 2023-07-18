@@ -3,15 +3,20 @@ interface BookProps {
     book: BookData
   }
 
+interface CategoryData{
+    name: string 
+}
+
 export interface BookData{
   id: number;
   title: string;
   price: number;
   description: string;
-  category: Array<Int16Array>;
+  category: CategoryData[];
   stock: number;
   interactionsCount: number;
-  releaseDate: string
+  releaseDate: string;
+  categories:string[]
 }
 
 function Book(props: BookProps) {
@@ -41,12 +46,8 @@ function Book(props: BookProps) {
     }
 
     return (
-      <div onClick={appendInteractions} className="flex flex-col items-stretch p-2">
-        <Link to={url}><img className ="w-44 bg-gray-900  border-8 border-gray-900 rounded-lg" src ="src/assets/NoBookAvailable.png"/></Link>
-        <div className="w-44 p-2 bg-zinc-900 h-full flex flex-col justify-between ">
-            <div className="py-1">{book.title}</div>
-            <div>£{book.price}</div>
-        </div>
+      <div onClick={appendInteractions}>
+        <Link to={url}><img className ="max-w-none w-28 md:w-32 rounded-lg panel-img" src ="src/assets/TestCover.jpg"/></Link>
       </div>
     );
   

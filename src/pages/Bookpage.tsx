@@ -2,9 +2,12 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import React from "react"
 import { useEffect, useState, useRef } from "react";
 import { BookData } from "../components/BookCard"
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import "../index.css"
 import CreateReview from "../components/CreateReview";
+import SimilarBooks from "../SimilarBooks";
+import BookReview from "../components/BookReviews";
+import BookReviews from "../components/BookReviews";
 
 interface review{
   username: string,
@@ -23,7 +26,6 @@ interface ratingType{
 export default function BookPage(){
     const { id } = useParams()
     const [book, setBook] = useState<BookData>()
-    const [similarBooks, setSimilarBooks] = useState<BookData[]>()
     const [bookReviews, setBookReviews] = useState<ratingType>()
     const [inCart, setInCart] = useState(false)
     const [cart, setCart] = useState<BookData[]>([])
@@ -31,7 +33,7 @@ export default function BookPage(){
     const [wishlist, setWishlist] = useState<BookData[]>([])
 
     const user = useUser()
-    const redirect = useNavigate()
+    const {getToken} = useAuth()
 
     const starDiv = useRef<HTMLParagraphElement>(null)
     const addToCart = () => {
@@ -52,22 +54,21 @@ export default function BookPage(){
         }
       }
 
-
-
       const addToWishlist = async() =>{
+        const myToken = await getToken()
         const data = {
           userId: user.user?.id,
           bookId: id
         }
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/addwishlist/add",{
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/wishlist/add",{
           method: "POST",
           body: JSON.stringify(data),
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${myToken}`
           }
         })
         const res = await response.json()
-        console.log(res)
       }
 
       const removeFromWishlist = async() =>{
@@ -84,31 +85,16 @@ export default function BookPage(){
               month: "long",
               year:"numeric"
             })
-
             setBook(res)
         }
 
-        const fetchSimilarBooks = async() =>{
-          const response = await fetch(`https://bookstore-eight-xi.vercel.app/books/similar/${id}/`)
-          const res = await response.json()
-          setSimilarBooks(res)
-        }
-
-        const fetchReviews = async() =>{
-          const response = await fetch(`https://bookstore-eight-xi.vercel.app/review/${id}`)
-          const res = await response.json()
-          setBookReviews(res)
-        }
-
-        const fetchWishlist = async() =>{
-          const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/${user.user?.id}`)
-          console.log(response)
-        }
+        // const fetchWishlist = async() =>{
+        //   const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/${user.user?.id}`)
+        //   const res = await response.json()
+        // }
 
         fetchBook()
-        fetchSimilarBooks()
-        fetchReviews()
-        fetchWishlist()
+        //fetchWishlist()
 
         const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
         setCart(cart)
@@ -134,24 +120,36 @@ export default function BookPage(){
       }))
     }, [book, cart])
 
-      
-
     return (
           <>
             {book ?  
             <React.Fragment>
-                <div className="flex justify-between mt-16 flex-wrap lg:flex-nowrap sm:gap-2">
+                <div className="flex justify-around mt-16 flex-wrap lg:flex-nowrap gap-4">
 
-                  <div className="basis-1/3 mx-auto">
-                    <img className="w-64 m-auto" src ="../src/assets/Samplebook.png"/>
+                  <div className="w-6/12 xl:w-max">
+                    <img className="w-64 h-full" src ="../src/assets/Samplebook.png"/>
                   </div>
 
-                  <div className="bg-zinc-800 p-4 rounded-lg basis-3/3 lg:basis-2/3 xl:basis-1/3 h-min 2xl:-ml-16">
-                    <h1 className="text-3xl">{book.title} - {book.releaseDate}</h1>
-                    <p>By John Cena</p>
-                    <div className="">{`$${book.price}`}</div>
-                    <div>{`${book.stock} in stock`}</div>
-                    <p className="mt-6 w-full">{book.description}</p>
+                  <div className="bg-secondary-purple p-4 rounded-lg xl:w-6/12">
+                    <h1 className="text-3xl font-semibold">{book.title} - {book.releaseDate}</h1>
+                    <div className="flex gap-2 flex-nowrap">
+                      {book.category.map((item, i) =>{
+                        return(
+                          <div key={i} className="p-2 bg-secondary-white rounded-lg my-4">{item.name}</div>
+                        )
+                      })}
+                    </div>
+                    <div className="flex flex-wrap gap-4 items-center mb-2" >
+                    <p ref={starDiv}>
+                      <i className="fa-star fa-regular fa-xl"></i>
+                      <i className="fa-star fa-regular fa-xl"></i>
+                      <i className="fa-star fa-regular fa-xl"></i>
+                      <i className="fa-star fa-regular fa-xl"></i>
+                      <i className="fa-star fa-regular fa-xl"></i>
+                    </p>
+                  </div>
+                    <p className="mb-2 font-medium">{book.description}</p>
+                    <div className="text-4xl font-semibold">{`$${book.price}`}</div>
                     <div className="flex flex-wrap gap-4 mt-4">
                       {user.isSignedIn &&(
                         <>
@@ -169,81 +167,26 @@ export default function BookPage(){
                         )}
                         </>
                       )}
-
-
                     </div>
-
                   </div>
-
-                  <div className="basis-1/3 overflow-auto h-96 hidden xl:block">
-                    <h1 className="text-center">Similar Books</h1>
-                    {similarBooks?.map((book) =>{
-                    return(
-
-                      <div key={book.id} className="flex flex-wrap gap-4 border-8 rounded-lg border-zinc-800 w-4/5 p-2 m-auto mt-2 hover:
-                      cursor-pointer" onClick={() =>{
-                        // there is no other graceful way of doing this that i know, router just wont let me redirect from book/x to book/y
-                        redirect(`../book/${book.id}`);
-                        redirect(0)
-                      }}>
-                        <img src="../src/assets/Samplebook.png" className="w-20"/>
-                        <div>
-                          <p>{book.title}</p>
-                        </div>
-                      </div>
-
-                    )
-                  })}
-                  </div>
-
+                  
+                  <SimilarBooks bookId={book.id}/>
                 </div>
-                <div className="flex flex-wrap gap-4 items-center mt-16" >
-                  <h1 className="text-3xl">Rating</h1>
-                  <p ref={starDiv}>
-                    <i className="fa-star fa-regular fa-2xl"></i>
-                    <i className="fa-star fa-regular fa-2xl"></i>
-                    <i className="fa-star fa-regular fa-2xl"></i>
-                    <i className="fa-star fa-regular fa-2xl"></i>
-                    <i className="fa-star fa-regular fa-2xl"></i>
-                  </p>
-                </div>
-
-                {(
+                
                   <div>
-                  <p className="mt-6 opacity-80">Write a review...</p>
+                    <p className="mt-6 opacity-80">Write a review...</p>
+                    <CreateReview bookId = {book.id}/>
+                  </div>
+                
+                  <BookReviews bookId = {book.id}/>
 
-                  <CreateReview bookId = {book.id}/>
-                </div>
-                )}
-
-
-                <h1 className="text-3xl mb-16 mt-4">Reviews</h1>
-                {bookReviews?.reviews.map((review) =>{
-                    return(
-                      <div key= {review.username} className="flex items-center space-x-4 mb-8 mt-8">
-                      {/* Left section */}
-                      <div className="flex-shrink-0">
-                        <img className="w-12 h-12 rounded-full" src={review.profileimageurl} alt="User" />
-                        <p>{user.user?.username}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold">{}</h3>
-                      </div>
-    
-                      {/* Right section */}
-                      <div className="flex-grow">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-xl font-semibold">{`${review.rating}/5`}</h4>
-                        </div>
-                        <p className="mt-2 text-gray-600">{review.comment}</p>
-                      </div>
-                    </div>
-                    )
-                  })
-                }
               </React.Fragment>
             : 
-            <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>}
+            <div className="w-screen h-screen place-content-center grid">
+              <div className="justify-self-center border-8 border-gray-200 border-t-blue-500 rounded-full w-10 h-10 animate-spin"></div>
+            </div>
+              }
           </>
     )
 }
+
