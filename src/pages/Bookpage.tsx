@@ -173,10 +173,13 @@ export default function BookPage(){
                   <SimilarBooks bookId={book.id}/>
                 </div>
                 
-                  <div>
+                {user.isSignedIn &&(
+                    <div>
                     <p className="mt-6 opacity-80">Write a review...</p>
                     <CreateReview bookId = {book.id}/>
                   </div>
+                )}
+
                 
                   <BookReviews bookId = {book.id}/>
 
