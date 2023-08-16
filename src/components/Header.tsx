@@ -17,12 +17,6 @@ function Header(){
                             </Link>
                         </li>
                         <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
-                            <Link to="/create">
-                                <p className="hidden md:block font-semibold">Post Book</p>
-                                <i className="fa-solid fa-house md:hidden"></i>
-                            </Link>
-                        </li>
-                        <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
                                 <Link to="/profile/cart">
                                     <p className="hidden md:block font-semibold">Cart</p>
                                     <i className="fa-solid fa-cart-shopping md:hidden"></i>

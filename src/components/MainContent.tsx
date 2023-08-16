@@ -6,7 +6,6 @@ import Cart from '../pages/Cart';
 import Profile from '../pages/Profile';
 import { OrderHistory, ProfileCart, ProfileIndex, Wishlist } from '../pages/userRoutes';
 import {Route, Routes, useLocation} from "react-router-dom"
-import PostBook from '../components/PostBook/PostBook';
 import Home from '../pages/Home';
 import SearchResult from "../pages/SearchResult";
 import CategoryResults from "../pages/CategoryResults";
@@ -27,7 +26,6 @@ function MainContent(){
         <div className='w-full mx-7 px-4'>
           <Routes>
             <Route path ="/" element={<Home />} />
-            <Route path ="/create" element={<PostBook />}/>
             <Route path='/privacy' element={<PrivacyPolicy />} />
             <Route path ="/cookies" element={<CookiePolicy />} />
             <Route path="/book/:id" element={<BookPage />} />
