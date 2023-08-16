@@ -69,10 +69,25 @@ export default function BookPage(){
           }
         })
         const res = await response.json()
+        console.log(res)
       }
 
       const removeFromWishlist = async() =>{
-        return
+        const myToken = await getToken()
+        const data = {
+          userId: user.user?.id,
+          id: id
+        }
+        const response = await fetch("https://bookstore-eight-xi.vercel.app/wishlist/remove",{
+          method: "DELETE",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${myToken}`
+          }
+        })
+        const res = await response.json()
+        console.log(res)
       }
 
       useEffect(() =>{
@@ -88,13 +103,26 @@ export default function BookPage(){
             setBook(res)
         }
 
-        // const fetchWishlist = async() =>{
-        //   const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/${user.user?.id}`)
-        //   const res = await response.json()
-        // }
+        const fetchWishlist = async() =>{
+          const myToken = await getToken()
+          const data = {
+            userId: user.user?.id,
+          }
+          const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/?limit=100`,{
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${myToken}`
+            }
+
+          })
+          const res = await response.json()
+          if(res.Books.length > 0) setWishlist(res.Books)
+        }
 
         fetchBook()
-        //fetchWishlist()
+        fetchWishlist()
 
         const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
         setCart(cart)
@@ -119,6 +147,12 @@ export default function BookPage(){
         return item.id === book?.id
       }))
     }, [book, cart])
+
+    useEffect(() =>{
+      wishlist.forEach((item)=>{
+        if(book?.id === item.id) setInWishlist(true)
+      })
+    },[wishlist])
 
     return (
           <>
@@ -160,7 +194,14 @@ export default function BookPage(){
                           ):(
                           <button onClick={addToCart}>Add to cart</button>
                           )}
-                          <button onClick={addToWishlist}>Add to wishlist</button>
+                          {inWishlist?(
+                            <button onClick={removeFromWishlist}>Remove From wishlist</button>
+                          )
+                          :
+                          (
+                            <button onClick={addToWishlist}>Add to wishlist</button>
+                          )}
+                          
                           </>
                         ):(
                           <></>
@@ -172,7 +213,7 @@ export default function BookPage(){
                   
                   <SimilarBooks bookId={book.id}/>
                 </div>
-                
+
                 {user.isSignedIn &&(
                     <div>
                     <p className="mt-6 opacity-80">Write a review...</p>
