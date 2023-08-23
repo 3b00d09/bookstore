@@ -41,7 +41,7 @@ export default function CategoryResults(props: props){
         if(entry?.isIntersecting) fetchNextPage()
     },[entry])
 
-    // disable sidebar while we are fetching data so user has to wait for data to be returned before clicking another catergory and calling more data
+    // disable sidebar while we are fetching data so user has to wait for data to be returned before clicking another catergory and calling more datanpm run 
     useEffect(() =>{
         props.setsideBarActive(!isFetching)
         

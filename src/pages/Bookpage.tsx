@@ -8,53 +8,97 @@ import CreateReview from "../components/CreateReview";
 import SimilarBooks from "../SimilarBooks";
 import BookReview from "../components/BookReviews";
 import BookReviews from "../components/BookReviews";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-interface review{
-  username: string,
-  comment: string,
-  rating: number,
-  profileimageurl: string
+export type reviewType = {
+  averageRating: number,
+  reviews:{
+    rating: number,
+    comment: string,
+    username: string,
+    profileimageurl: string,
+  }[]
 }
 
-interface ratingType{
-  averageRating: number,
-  reviews: review[]
+interface wishlistType{
+  Books: BookData[]
 }
 
 
 
 export default function BookPage(){
     const { id } = useParams()
-    const [book, setBook] = useState<BookData>()
-    const [bookReviews, setBookReviews] = useState<ratingType>()
     const [inCart, setInCart] = useState(false)
     const [cart, setCart] = useState<BookData[]>([])
     const [inWishlist, setInWishlist] = useState(false)
-    const [wishlist, setWishlist] = useState<BookData[]>([])
+    const [refreshingWishlist, setRefreshingWishlist] = useState(false)
+    const starDiv = useRef<HTMLParagraphElement>(null)
 
     const user = useUser()
     const {getToken} = useAuth()
 
-    const starDiv = useRef<HTMLParagraphElement>(null)
+    const book = useQuery(({queryKey:["book", id], queryFn:async()=>{
+
+        const response = await fetch(`https://bookstore-eight-xi.vercel.app/book/${id}`)
+        const res = await response.json()
+        const date = new Date( res.releaseDate);
+        res.releaseDate = date.toLocaleDateString("en-GB",{
+          month: "long",
+          year:"numeric"
+        })
+        return res as BookData
+      }
+    }))
+
+    const reviews = useQuery(({queryKey:["reviews", id], queryFn:async()=>{
+
+        const response = await fetch(`https://bookstore-eight-xi.vercel.app/review/${id}`)
+        const res = await response.json()
+        return res as reviewType
+    }}))
+
+    const wishlist = useQuery({queryKey:["wishlist", id], queryFn:async()=>{
+      const myToken = await getToken()
+      const data = {
+        userId: user.user?.id,
+      }
+      const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/?limit=100`,{
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myToken}`
+        }
+
+      })
+      const res = await response.json()
+      setInWishlist(false)
+      res.Books.forEach((item:BookData)=>{
+        if(id === item.id.toString()) setInWishlist(true)
+      })
+      return res as wishlistType
+    }})
+
     const addToCart = () => {
 
-        if (book) {
+        if (book.data) {
         // Append the book to the existing cart or create a new cart with only the book we are adding
-          const updatedCart = [...cart, book]; 
+          const updatedCart = [...cart, book.data]; 
           localStorage.setItem("cart", JSON.stringify(updatedCart));
           setCart(updatedCart)
         }
       };
 
       const removeFromCart = () =>{
-        if(book){
-          const updatedCart = cart.filter((item) => {return item.id !== book.id})
+        if(book.data){
+          const updatedCart = cart.filter((item) => {return item.id !== book.data.id})
           localStorage.setItem("cart", JSON.stringify(updatedCart))
           setCart(updatedCart)
         }
       }
 
-      const addToWishlist = async() =>{
+      const addToWishlist = useMutation(async()=>{
+        setRefreshingWishlist(true)
         const myToken = await getToken()
         const data = {
           userId: user.user?.id,
@@ -69,10 +113,13 @@ export default function BookPage(){
           }
         })
         const res = await response.json()
-        console.log(res)
-      }
+        setRefreshingWishlist(false)
+        wishlist.refetch()
+        return res
+      })
 
-      const removeFromWishlist = async() =>{
+      const removeFromWishlist = useMutation(async()=>{
+        setRefreshingWishlist(true)
         const myToken = await getToken()
         const data = {
           userId: user.user?.id,
@@ -86,51 +133,19 @@ export default function BookPage(){
             Authorization: `Bearer ${myToken}`
           }
         })
-        const res = await response.json()
-        console.log(res)
-      }
+        //if(response.status === 500) //handle error?
+        setRefreshingWishlist(false)
+        wishlist.refetch()
+      })
 
       useEffect(() =>{
-        
-        const fetchBook = async () => {
-            const response = await fetch(`https://bookstore-eight-xi.vercel.app/book/${id}`)
-            const res = await response.json()
-            const date = new Date( res.releaseDate);
-            res.releaseDate = date.toLocaleDateString("en-GB",{
-              month: "long",
-              year:"numeric"
-            })
-            setBook(res)
-        }
-
-        const fetchWishlist = async() =>{
-          const myToken = await getToken()
-          const data = {
-            userId: user.user?.id,
-          }
-          const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/?limit=100`,{
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${myToken}`
-            }
-
-          })
-          const res = await response.json()
-          if(res.Books.length > 0) setWishlist(res.Books)
-        }
-
-        fetchBook()
-        fetchWishlist()
-
         const cart: BookData[] = JSON.parse(localStorage.getItem("cart") || "[]") as BookData[];
         setCart(cart)
     }, [])
 
     useEffect(() =>{
       if(starDiv.current){
-        const rating = bookReviews?.averageRating
+        const rating = reviews.data?.averageRating
         if (!rating) return
         for (let i = 0; i<Math.floor(rating); i++){
           starDiv.current.children[i].classList.add("active", "fa-solid")
@@ -140,23 +155,17 @@ export default function BookPage(){
           starDiv.current.children[lastStar].classList.add("fa-star-half-stroke", "active")
         }
         }
-    },[bookReviews])
+    },[reviews])
 
     useEffect(() =>{
       setInCart(cart.some((item)=>{
-        return item.id === book?.id
+        return item.id === book.data?.id
       }))
     }, [book, cart])
 
-    useEffect(() =>{
-      wishlist.forEach((item)=>{
-        if(book?.id === item.id) setInWishlist(true)
-      })
-    },[wishlist])
-
     return (
           <>
-            {book ?  
+            {book.data && wishlist.data?  
             <React.Fragment>
                 <div className="flex justify-around mt-16 flex-wrap lg:flex-nowrap gap-4">
 
@@ -165,9 +174,9 @@ export default function BookPage(){
                   </div>
 
                   <div className="bg-secondary-purple p-4 rounded-lg xl:w-6/12">
-                    <h1 className="text-3xl font-semibold">{book.title} - {book.releaseDate}</h1>
+                    <h1 className="text-3xl font-semibold">{book.data.title} - {book.data.releaseDate}</h1>
                     <div className="flex gap-2 flex-nowrap">
-                      {book.category.map((item, i) =>{
+                      {book.data.category.map((item, i) =>{
                         return(
                           <div key={i} className="p-2 bg-secondary-white rounded-lg my-4">{item.name}</div>
                         )
@@ -182,27 +191,32 @@ export default function BookPage(){
                       <i className="fa-star fa-regular fa-xl"></i>
                     </p>
                   </div>
-                    <p className="mb-2 font-medium">{book.description}</p>
-                    <div className="text-4xl font-semibold">{`$${book.price}`}</div>
+                    <p className="mb-2 font-medium">{book.data.description}</p>
+                    <div className="text-4xl font-semibold">{`$${book.data.price}`}</div>
                     <div className="flex flex-wrap gap-4 mt-4">
                       {user.isSignedIn &&(
                         <>
-                        {book.stock > 0?(
+                        {book.data.stock > 0?(
                           <>
                           {inCart?(
                             <button onClick={removeFromCart}>Remove from cart</button>
                           ):(
                           <button onClick={addToCart}>Add to cart</button>
                           )}
-                          {inWishlist?(
-                            <button onClick={removeFromWishlist}>Remove From wishlist</button>
-                          )
-                          :
-                          (
-                            <button onClick={addToWishlist}>Add to wishlist</button>
-                          )}
                           
-                          </>
+                            {inWishlist?(
+                              <button onClick={()=>removeFromWishlist.mutate()}>
+                                {wishlist.isRefetching || refreshingWishlist ? "Loading" : "Remove From wishlist"}
+                                </button>
+                            )
+                            :
+                            (
+                              <button onClick={()=>addToWishlist.mutate()}>
+                                {wishlist.isRefetching || refreshingWishlist ? "Loading" : "Add To wishlist"}
+                                </button>
+                            )}
+                            </>
+
                         ):(
                           <></>
                         )}
@@ -211,19 +225,26 @@ export default function BookPage(){
                     </div>
                   </div>
                   
-                  <SimilarBooks bookId={book.id}/>
+                  <SimilarBooks bookId={book.data.id}/>
                 </div>
 
                 {user.isSignedIn &&(
                     <div>
                     <p className="mt-6 opacity-80">Write a review...</p>
-                    <CreateReview bookId = {book.id}/>
+                    <CreateReview bookId = {book.data.id}/>
                   </div>
                 )}
 
+                  {reviews.isLoading &&(
+                    <p>Loading...</p>
+                  )}
+                  {reviews.data &&(
+                    <BookReviews reviews = {reviews.data}/>
+                  )}
+                  {reviews.isError &&(
+                    <p>Error retrieving reviews.</p>
+                  )}
                 
-                  <BookReviews bookId = {book.id}/>
-
               </React.Fragment>
             : 
             <div className="w-screen h-screen place-content-center grid">

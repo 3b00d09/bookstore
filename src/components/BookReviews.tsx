@@ -1,39 +1,19 @@
 import { useQuery } from "@tanstack/react-query"
+import { reviewType } from "../pages/Bookpage"
 
 interface props{
-    bookId: number
-}
-
-interface review{
-    username: string,
-    comment: string,
-    rating: number,
-    profileimageurl: string
-}
-  
-interface ratingType{
-    averageRating: number,
-    reviews: review[]
+    reviews: reviewType
 }
 
 export default function BookReviews(props:props){
-    
-    const {data, isLoading, isSuccess, isError} = useQuery({queryKey:["bookReviews", props.bookId], queryFn:async()=>{
-        const response = await fetch(`https://bookstore-eight-xi.vercel.app/review/${props.bookId}`)
-        const res = await response.json()
-        return res;
-    }} )
 
     return(
         <>
             <h1 className="text-4xl font-semibold mb-16 mt-4">Reviews</h1>
-            {isLoading &&(
-                <p>Loading</p>
-            )}
 
-            {isSuccess &&(
+            {props.reviews.reviews &&(
                 <>
-                    {data.reviews.map((review:review) =>{
+                    {props.reviews.reviews.map((review) =>{
                     return(
                         <div key= {review.username} className="flex items-center space-x-4 mb-8 mt-8 bg-secondary-white p-2 rounded-lg">
                             {/* Left section */}
@@ -57,10 +37,6 @@ export default function BookReviews(props:props){
                 })
             }
                 </>
-            )}
-
-            {isError &&(
-                <p>Error fetching reviews.</p>
             )}
         </>
     )
