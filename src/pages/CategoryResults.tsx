@@ -25,7 +25,7 @@ export default function CategoryResults(props: props){
     const {data, error, fetchNextPage, isFetching, isFetchingNextPage, isLoading} = useInfiniteQuery({
         queryKey:["categoryResults", query], 
         queryFn: (fetchBooks), 
-        getNextPageParam: (lastPage, allPages) => {
+        getNextPageParam: (lastPage) => {
             let nextPage = lastPage.currentPage + 1;
             return nextPage <= lastPage.totalPages ? nextPage : undefined; 
         },
@@ -55,6 +55,10 @@ export default function CategoryResults(props: props){
             props.setsideBarActive(true)
         })
     }, [])
+
+    useEffect(()=>{
+        console.log(data?.pages)
+    },[data?.pages])
     
 
     return(
@@ -64,6 +68,10 @@ export default function CategoryResults(props: props){
             ):<></>}
 
             <div className="grid md:grid-cols-2 gap-8">
+            {/**can use [0] index because we only want to display this when no results found at all so there isnt pagination**/}
+            {data?.pages[0].Books.length === 0 &&(
+                <div>No results found.</div>
+            )}
             {data?.pages.map((group, i) =>{
                         return(
                             <React.Fragment key={i}>
