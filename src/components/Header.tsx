@@ -10,22 +10,24 @@ function Header(){
                 <Search />
                 <SignedIn>
                     <ul className ="list-none justify-center items-center flex-wrap gap-4 basis-1/4 hidden md:flex">
-                        <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
-                            <Link to="/">
+                        <Link to="/">
+                            <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
+                            
                                 <p className="hidden md:block font-semibold">Home</p>
                                 <i className="fa-solid fa-house md:hidden"></i>
-                            </Link>
-                        </li>
-                        <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
-                                <Link to="/profile/cart">
+                            </li>
+                        </Link>
+                        <Link to="/profile/cart">
+                            <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
+                                
                                     <p className="hidden md:block font-semibold">Cart</p>
                                     <i className="fa-solid fa-cart-shopping md:hidden"></i>
-                                </Link>
-                        </li>
-                        <li className ="py-1 px-2 hover:bg-gray-700 hover:cursor-pointer">
+                                
+                            </li>
+                        </Link>
+                        <li className ="py-1 px-2 hover:cursor-pointer">
                                 <SignOutButton />
                         </li>
-                        <li>fix header</li>
                     </ul>
                 </SignedIn>
 
