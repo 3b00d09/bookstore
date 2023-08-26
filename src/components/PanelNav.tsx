@@ -91,7 +91,9 @@ export default function PanelNav(props: HomeSectionProps){
                     <div className="flex p-2 mt-6 justify-center gap-16">
 
                         {/* NEED Z INDEX BECAUSE WE HAVE ::BEFORE HERE AND SO IT COVERS THE P TAG AND DOESNT MAKE IT CLICKABLE */}
-                        <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
+                        <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handlePrevNav}>
+                            <i className="fa-solid fa-arrow-left"></i>
+                        </p>
 
 
                             {bookPages.length > 0 &&(
@@ -119,12 +121,19 @@ export default function PanelNav(props: HomeSectionProps){
                                 </AnimatePresence>
                             )}
 
-                        <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
+                        <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handleNextNav}>
+                            <i className="fa-solid fa-arrow-right"></i>
+                        </p>
                     </div>
 
+                    {/* for mobile view the arrows move down */}
                     <div className="flex lg:hidden justify-around mt-4">
-                        <p className="z-10 cursor-pointer" onClick={handlePrevNav}>PREV</p>
-                        <p className="z-10 cursor-pointer" onClick={handleNextNav}>NEXT</p>
+                        <p className="z-10 cursor-pointer" onClick={handlePrevNav}>
+                            <i className="fa-solid fa-arrow-left"></i>
+                        </p>
+                        <p className="z-10 cursor-pointer" onClick={handleNextNav}>
+                            <i className="fa-solid fa-arrow-right"></i>
+                        </p>
                     </div>
 
                 </React.Fragment>
