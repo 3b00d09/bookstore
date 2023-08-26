@@ -97,28 +97,29 @@ export default function PanelNav(props: HomeSectionProps){
 
 
                             {bookPages.length > 0 &&(
-                                // AnimatePresence with those two props tells our DOM to wait until current element leaves before animating new one in
-                                <AnimatePresence mode="wait">
-                                
+                                <>
                                 {bookPages[currIndex].map((book) =>{
                                     return(
-                                            /* the div with all the animation magic happening https://www.framer.com/motion/component/ */
-                                            <motion.div
-                                            key={book.id}
-                                            whileHover={{scale: 1.2}}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
-                                            transition={{ duration: 0.6, ease:"easeInOut"}}
-                                            className="relative rounded-lg hover:bg-opacity-40"
-                                            onClick={() => redirect(`/book/${book.id}`)}
-                                            >
-                                                <BookCard book={book}/>
-                                            </motion.div>
+                                            // AnimatePresence with those two props tells our DOM to wait until current element leaves before animating new one in
+                                            <AnimatePresence mode="wait" key={book.id}>
+                                                {/* the div with all the animation magic happening https://www.framer.com/motion/component/ */}
+                                                <motion.div
+                                                whileHover={{scale: 1.2}}
+                                                initial={{ opacity: 0, x: 60 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: -20 }}
+                                                transition={{ duration: 0.6, ease:"easeInOut"}}
+                                                className="relative rounded-lg hover:bg-opacity-40"
+                                                onClick={() => redirect(`/book/${book.id}`)}
+                                                >
+                                                    <BookCard book={book}/>
+                                                </motion.div>
+                                            </AnimatePresence>
                                         
                                     )
                                 })}
-                                </AnimatePresence>
+                                </>
+                               
                             )}
 
                         <p className="hidden lg:block self-center z-10 cursor-pointer" onClick={handleNextNav}>
