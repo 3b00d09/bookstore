@@ -41,21 +41,20 @@ function AllBooks(){
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                     className="z-10 text-center"
                     >
-                <p className="text-6xl italic font-semibold">Find Your Next Literary Treasure</p>
-                <p className="text-3xl mt-2 font-semibold italic">Where Words Come Alive...</p>
+                <p className="text-3xl lg:text-5xl md:text-4xl italic font-semibold">Explore a Vast Collection of <br/><span className="gradient-text">Literary Treasures</span></p>
                 </motion.div>
             </div>
-            <h1 className="mt-6 text-4xl font-medium">Popular Titles</h1>
+            <h1 className="mt-6 text-2xl lg:text-4xl md:text-3xl">Popular Titles</h1>
             {/* <PanelNav heading={"Featured Books"} query={featured}/> */}
             {popular &&(
                 <PanelNav key={"Popular"} heading={"Popular"} query={{data:popular.data, isError:popular.isError, isSuccess: popular.isSuccess, isLoading: popular.isFetching}}/>
             )}
-            <h1 className="mt-6 text-4xl font-medium">Top Selling Titles</h1>
+            <h1 className="mt-6 text-2xl lg:text-4xl md:text-3xl">Top Selling Titles</h1>
             {topSelling &&(
                 <PanelNav key={"Top Selling"} heading={"Top Selling"} query={{data:topSelling.data, isError:topSelling.isError, isSuccess: topSelling.isSuccess, isLoading: topSelling.isFetching}}/>
             )}
 
-            <h1 className="mt-6 text-4xl font-medium">Most Wished For</h1>
+            <h1 className="mt-6 text-2xl lg:text-4xl md:text-3xl">Most Wished For</h1>
             {mostWishedFor &&(
                 <PanelNav key={"Most Wished For"} heading={"Most Wished For"} query={{data:mostWishedFor.data, isError:mostWishedFor.isError, isSuccess: mostWishedFor.isSuccess, isLoading: mostWishedFor.isLoading}}/>
             )}

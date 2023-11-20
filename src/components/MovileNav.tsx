@@ -11,7 +11,6 @@ export default function MobileNav(){
         // to know active or not
         const parent = e.target.parentElement
         const classlist = Array.from(parent.classList)
-        console.log(classlist)
 
         if(classlist.includes("bg-gray-900")){
             parent.classList.remove("bg-gray-900")
@@ -33,7 +32,7 @@ export default function MobileNav(){
 
     }
     return(
-        <div className="bottom-0 w-screen sticky p-2 bg-secondary-purple md:hidden z-50">
+        <div className="bottom-0 w-screen sticky p-2 bg-secondary md:hidden z-50">
                 <ul className ="list-none justify-around items-center gap-4 basis-1/4 flex">
                     <SignedIn>
                         <li className ="py-1 px-2 hover:cursor-pointer">
@@ -42,11 +41,6 @@ export default function MobileNav(){
 
                         <li className ="py-1 px-2 hover:cursor-pointer">
                             <Link to="/">
-                                <i className="fa-solid fa-house"></i>
-                            </Link>
-                        </li>
-                        <li className ="py-1 px-2 hover:cursor-pointer">
-                            <Link to="/create">
                                 <i className="fa-solid fa-house"></i>
                             </Link>
                         </li>

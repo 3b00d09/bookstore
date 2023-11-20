@@ -67,7 +67,6 @@ function ProfileCart(){
         {cartItems.length > 0 ? (
             
             <AnimatePresence>
-            <button onClick={processPurchase} key={Math.random()} className="mb-10">Purchase Items</button>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {cartItems.map((book:BookData) =>{
                 return(
@@ -86,7 +85,9 @@ function ProfileCart(){
                     </motion.div>
                 )
             })}
+            
             </div>
+            <button onClick={processPurchase} key={Math.random()} className="mb-10">Purchase Items</button>
             </AnimatePresence>
             
         )

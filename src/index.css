@@ -1,18 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto Serif:700|Roboto:400');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  background-color: #EFEEE7;
-  color: #12120C;
-	/* background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
-                radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%); */
-  
-
   
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -23,8 +16,30 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
+  --text: #120b19;
+  --background: #eae3f2;
+  --primary: #d0c6db;
+  --secondary: #d8cae7;
+  --accent: #663b97;
+
   word-wrap: break-word;
-	font-size: clamp(14px, 1.5vw, 18px);
+}
+
+body {
+  font-family: 'Roboto';
+  color: var(--text);
+  background-color: var(--background);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Roboto Serif';
+}
+
+.gradient-text{
+  background-image: linear-gradient(to right, #8333d8, #201829); /* Define your gradient colors */
+  -webkit-background-clip: text; /* For older webkit-based browsers */
+  background-clip: text;
+  color: transparent;
 }
 
 *{
@@ -153,13 +168,11 @@ button:focus-visible {
   left: 0px;
   background-size: cover;
   background-position: center;
-  filter: blur(3px);
-  opacity: 0.5;
+  filter: blur(2px);
+  opacity: 0.4;
 }
 
-.main-banner::before{
-  background-image:url("./assets/MainBannerBg.jpg")
-}
+
 
 .Popular::before{
   background-image: url("./assets/LibraryWhite.jpg");

@@ -60,7 +60,7 @@ function SideBar(props:props ){
     },[props.activeCategories])
 
     return(
-        <div id="sidebar" className="max-w-xs bg-secondary-purple p-6 hidden lg:block sticky top-0 left-0 h-screen">
+        <div id="sidebar" className="max-w-xs bg-secondary p-6 hidden lg:block sticky top-0 left-0 h-screen z-40">
 
                 <h2 className="text-2xl mb-1 font-semibold">Categories</h2>
 
@@ -78,9 +78,9 @@ function SideBar(props:props ){
                     <i onClick={handleCategoryClick} id={"Fiction"}className="category-select hover:cursor-pointer fa-solid fa-glasses"></i><p>Fiction</p>
                     <i onClick={handleCategoryClick} id={"Poetry"}className="category-select hover:cursor-pointer fa-solid fa-pencil"></i><p>Poetry</p>
                 </ul>
-                <div className="fixed bottom-8">
-                    <p>Frontend by Annon</p>
-                    <p>Backend by Jexzz</p>
+                <div className="fixed bottom-20 md:bottom-4">
+                    <p><a target="_blank" href="https://github.com/3b00d09"><i className="fa-brands fa-github"></i></a> 3b00d09 </p>
+                    <p><a target="_blank" href="https://github.com/diyararashid123"><i className="fa-brands fa-github"></i></a> Diyararashid123 </p>
                 </div>
             </div>
 
