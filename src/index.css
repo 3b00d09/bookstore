@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto Serif:700|Roboto:400');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&family=Roboto&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,7 +17,7 @@
   -webkit-text-size-adjust: 100%;
 
   --text: #120b19;
-  --background: #eae3f2;
+  --background: #f9f8fa;
   --primary: #d0c6db;
   --secondary: #d8cae7;
   --accent: #663b97;
@@ -32,7 +32,7 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: 'Roboto Serif';
+  font-family: 'Inter';
 }
 
 .gradient-text{
@@ -67,18 +67,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
 
 #root{
   height: 100vh;
