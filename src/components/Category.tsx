@@ -10,7 +10,7 @@ function getCategory(){
     useEffect(() =>{
 
         const fetchBooks = async()=>{
-            const response = await fetch("https://bookstore-eight-xi.vercel.app/categories/Romance")
+            const response = await fetch("http://localhost:3000/categories/Romance")
             const res = await response.json()
             setBooks(res.book)
             console.log(res.book)

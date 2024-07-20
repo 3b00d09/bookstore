@@ -52,7 +52,7 @@ function App() {
     }
 
     const myToken = await getToken()
-    const response = await fetch("https://bookstore-eight-xi.vercel.app/interactions",{
+    const response = await fetch("https://bookstore-eight-xi..app/interactions",{
       method: "POST",
       headers: {
           "Content-Type": "application/json",

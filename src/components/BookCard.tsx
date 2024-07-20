@@ -1,10 +1,11 @@
-import {Link} from "react-router-dom";
 interface BookProps {
     book: BookData
+    header: string
   }
 
 interface CategoryData{
     name: string 
+    id:string
 }
 
 export interface BookData{
@@ -16,7 +17,6 @@ export interface BookData{
   stock: number;
   interactionsCount: number;
   releaseDate: string;
-  categories:string[]
 }
 
 function Book(props: BookProps) {
@@ -46,8 +46,39 @@ function Book(props: BookProps) {
     }
 
     return (
-      <div onClick={appendInteractions}>
-        <Link to={url}><img className ="max-w-none w-28 md:w-32 rounded-lg panel-img" src ="src/assets/TestCover.jpg"/></Link>
+      <div className="grid grid-rows-2 h-full">
+        <img
+          src="src/assets/mainBannerbg.jpg"
+          className="aspect-[3/4] w-full object-cover transition-opacity group-hover:opacity-80"
+        />
+        <div className="grid grid-rows-[auto_auto_auto] gap-2 place-content-center p-2">
+          <h3 className="text-lg font-bold text-center line-clamp-2 h-16">
+            {book.title}
+          </h3>
+
+          <div className="flex flex-col justify-start h-20 overflow-hidden">
+            {book.category && book.category.length > 0 ? (
+              book.category.map((category) => (
+                <p
+                  key={category.id}
+                  className="text-[#604c77] text-center text-lg"
+                >
+                  {category.name}
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-400 text-center text-sm">No categories</p>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center items-center mt-auto">
+            <button className="rounded-lg px-2 py-1 text-xs font-semibold bg-[#653899] text-[#f9f8fa] hover:cursor-default">
+              {props.header}
+            </button>
+            <a href={url} onClick={appendInteractions} className="rounded-lg px-2 py-1 text-xs font-semibold bg-[#653899] text-[#f9f8fa]">
+              Learn More
+            </a>
+          </div>
+        </div>
       </div>
     );
   

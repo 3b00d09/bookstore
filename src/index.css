@@ -137,7 +137,6 @@ button:focus-visible {
 .panel-nav, .main-banner{
   position: relative;
   justify-content: center;
-  height: 300px;
 }
 
 /** https://coder-coder.com/background-image-opacity/ **/

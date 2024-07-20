@@ -17,8 +17,9 @@ export default function CategoryResults(props: props){
     const redirect = useNavigate()
 
     const fetchBooks = async({pageParam = 1})=>{
-        const response = await fetch(`https://bookstore-git-main-diyararashid123.vercel.app/categories/books/?names=${query.query}&page=${pageParam}`)
+        const response = await fetch(`http://localhost:3000/categories/books/?names=${query.query}&page=${pageParam}`)
         const res = await response.json()
+        console.log(res)
         return res
     }
 

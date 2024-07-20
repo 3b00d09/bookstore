@@ -39,7 +39,7 @@ export default function BookPage(){
 
     const book = useQuery(({queryKey:["book", id], queryFn:async()=>{
 
-        const response = await fetch(`https://bookstore-eight-xi.vercel.app/book/${id}`)
+        const response = await fetch(`http://localhost:3000/book/${id}`)
         const res = await response.json()
         const date = new Date( res.releaseDate);
         res.releaseDate = date.toLocaleDateString("en-GB",{
@@ -52,7 +52,7 @@ export default function BookPage(){
 
     const reviews = useQuery(({queryKey:["reviews", id], queryFn:async()=>{
 
-        const response = await fetch(`https://bookstore-eight-xi.vercel.app/review/${id}`)
+        const response = await fetch(`http://localhost:3000/review/${id}`)
         const res = await response.json()
         return res as reviewType
     }}))
@@ -62,7 +62,7 @@ export default function BookPage(){
       const data = {
         userId: user.user?.id,
       }
-      const response = await fetch(`https://bookstore-eight-xi.vercel.app/wishlist/?limit=100`,{
+      const response = await fetch(`http://localhost:3000/wishlist/?limit=100`,{
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -104,7 +104,7 @@ export default function BookPage(){
           userId: user.user?.id,
           bookId: id
         }
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/wishlist/add",{
+        const response = await fetch("http://localhost:3000/wishlist/add",{
           method: "POST",
           body: JSON.stringify(data),
           headers: {
@@ -125,7 +125,7 @@ export default function BookPage(){
           userId: user.user?.id,
           id: id
         }
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/wishlist/remove",{
+        const response = await fetch("http://localhost:3000/wishlist/remove",{
           method: "DELETE",
           body: JSON.stringify(data),
           headers: {

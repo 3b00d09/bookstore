@@ -10,7 +10,7 @@ export default function SimilarBooks(props:props){
 
     const redirect = useNavigate()
     const {data, isLoading, isError, isSuccess} = useQuery({queryKey:["similarBooks", props.bookId], queryFn: async ()=>{
-        const response = await fetch(`https://bookstore-eight-xi.vercel.app/books/similar/${props.bookId}/`)
+        const response = await fetch(`http://localhost:3000/books/similar/${props.bookId}/`)
         const res = await response.json()
         return res
     }})

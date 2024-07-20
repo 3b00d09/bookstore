@@ -38,7 +38,7 @@ export default function Cart (){
             cart: temp
         }
 
-        const response = await fetch("https://bookstore-eight-xi.vercel.app/book/buy", {
+        const response = await fetch("http://localhost:3000/book/buy", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
